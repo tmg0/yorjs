@@ -1,9 +1,9 @@
 import { Provider } from '../defineProvider'
 
 export const useProvider = <T>(options: Provider<T>): T => {
-  const { provider, metadata } = options
+  const { getter, metadata } = options
 
-  if (!metadata.dependencies.length) return provider()
+  if (!metadata.dependencies.length) return getter()
 
   const dependencies: any = []
 
@@ -11,5 +11,5 @@ export const useProvider = <T>(options: Provider<T>): T => {
     dependencies.push(useProvider(provider))
   })
 
-  return provider(...dependencies)
+  return getter(...dependencies)
 }

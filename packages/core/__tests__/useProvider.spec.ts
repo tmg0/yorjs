@@ -2,7 +2,7 @@ import { defineProvider } from '../'
 import { useProvider } from '../useProvider'
 
 describe('use provider', () => {
-  it('should have sign in method in user service', async () => {
+  it('should have token field in user service', async () => {
     interface SignInDto {
       username: string
       password: string

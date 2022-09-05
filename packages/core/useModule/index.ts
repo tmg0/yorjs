@@ -1,14 +1,12 @@
 import { Module } from '../defineModule'
 import { useProvider } from '../useProvider'
 
-type ReactiveController<T extends object> = ReturnType<
-  Module<T>['controller']['controller']
->
+type ReactiveController<T extends object> = ReturnType<Module<T>['controller']['getter']>
 
 export const useModule = <T extends object>(module: Module<T>): ReactiveController<T> => {
-  const { controller, metadata } = module.controller
+  const { getter, metadata } = module.controller
 
-  if (!metadata.dependencies.length) return controller()
+  if (!metadata.dependencies.length) return getter()
 
   const dependencies: any = []
 
@@ -16,5 +14,5 @@ export const useModule = <T extends object>(module: Module<T>): ReactiveControll
     dependencies.push(useProvider(provider))
   })
 
-  return controller(...dependencies)
+  return getter(...dependencies)
 }

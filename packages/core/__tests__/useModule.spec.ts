@@ -2,8 +2,8 @@
 import { reactive } from 'vue'
 import { defineController, defineProvider, defineModule, useModule } from '../'
 
-describe('define controller', () => {
-  it('should have controller dependencies in metadata', async () => {
+describe('use module', () => {
+  it('should have instance in a single provider', async () => {
     interface SignInDto {
       username: string
       password: string

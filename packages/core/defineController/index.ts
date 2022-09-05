@@ -6,11 +6,11 @@ export interface ControllerMetadata {
 }
 
 export class Controller<T extends object> {
-  public controller: (args?: any) => T
+  public getter: (args?: any) => T
   public metadata: ControllerMetadata = { dependencies: [] }
 
-  constructor(controller: (args?: any) => T) {
-    this.controller = controller
+  constructor(getter: (args?: any) => T) {
+    this.getter = getter
   }
 
   dependencies(...dependencies: Array<unknown>) {
@@ -20,7 +20,7 @@ export class Controller<T extends object> {
 }
 
 export const defineController = <T extends object>(
-  cb: (args?: any) => T
+  getter: (args?: any) => T
 ): Controller<T> => {
-  return new Controller<T>(cb)
+  return new Controller<T>(getter)
 }

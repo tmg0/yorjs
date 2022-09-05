@@ -5,11 +5,11 @@ export interface ProviderMetadata {
 }
 
 export class Provider<T> {
-  public provider: (args?: any) => T
+  public getter: (args?: any) => T
   public metadata: ProviderMetadata = { dependencies: [] }
 
-  constructor(provider: (args?: any) => T) {
-    this.provider = provider
+  constructor(getter: (args?: any) => T) {
+    this.getter = getter
   }
 
   dependencies(...dependencies: Array<unknown>) {
@@ -18,6 +18,6 @@ export class Provider<T> {
   }
 }
 
-export const defineProvider = <T>(cb: (args?: any) => T): Provider<T> => {
-  return new Provider(cb)
+export const defineProvider = <T>(getter: (args?: any) => T): Provider<T> => {
+  return new Provider(getter)
 }
