@@ -1,56 +1,55 @@
 // import { reactive } from 'vue'
-import { defineProvider } from '../'
-import { useProvider } from '../useProvider'
+import { reactive } from 'vue'
+import { defineController, defineProvider, defineModule, useModule } from '../'
 
 describe('define controller', () => {
-  it('should have controller dependencies in metadata', () => {
+  it('should have controller dependencies in metadata', async () => {
     interface SignInDto {
       username: string
       password: string
     }
 
+    interface SignInResDto extends SignInDto {
+      token: string
+    }
+
     interface UserApi {
-      signIn(data: SignInDto): Promise<{ token: string }>
+      signIn(data: SignInDto): Promise<SignInResDto>
     }
 
-    interface UserService {
-      signIn(data: SignInDto): Promise<{ token: string }>
-    }
+    interface UserService extends UserApi {}
 
-    // const UserApiImpl = defineProvider<UserApi>(() => ({
-    //   signIn(data: SignInDto) {
-    //     return Promise.resolve({ token: 'TOKEN' })
-    //   }
-    // }))
+    const UserApiImpl = defineProvider<UserApi>(() => ({
+      signIn(data: SignInDto) {
+        return Promise.resolve({ token: 'TOKEN', ...data })
+      }
+    }))
 
     const UserServiceImpl = defineProvider<UserService>((userApi: UserApi) => ({
       signIn(data: SignInDto) {
         return userApi.signIn(data)
       }
-    }))
+    })).dependencies(UserApiImpl)
 
-    // const UserController = defineController((userService: UserService) => {
-    //   const usernameSignInForm = reactive({ username: '', password: '' })
+    const UserController = defineController((userService: UserService) => {
+      const usernameSignInForm = reactive({ username: '', password: '' })
 
-    //   const signIn = () => {
-    //     userService.signIn(usernameSignInForm)
-    //   }
+      const signIn = () => {
+        return userService.signIn(usernameSignInForm)
+      }
 
-    //   return {
-    //     usernameSignInForm,
-    //     signIn
-    //   }
-    // })
+      return {
+        usernameSignInForm,
+        signIn
+      }
+    }).dependencies(UserServiceImpl)
 
-    // const UserModule = defineModule({
-    //   controller: UserController.dependencies(UserServiceImpl),
-    //   providers: [UserServiceImpl.dependencies(UserApiImpl), UserApiImpl]
-    // })
+    const UserModule = defineModule({ controller: UserController })
 
-    const userService = useProvider(UserServiceImpl)
+    const user = useModule(UserModule)
 
-    console.log(userService)
+    const { username } = await user.signIn()
 
-    expect(1).toBe(1)
+    expect(username).toBe(user.usernameSignInForm.username)
   })
 })

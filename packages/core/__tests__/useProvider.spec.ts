@@ -18,7 +18,7 @@ describe('use provider', () => {
 
     const UserApiImpl = defineProvider<UserApi>(() => ({
       signIn(data: SignInDto) {
-        return Promise.resolve({ token: 'TOKEN' })
+        return Promise.resolve({ token: 'TOKEN', ...data })
       }
     }))
 
@@ -30,8 +30,8 @@ describe('use provider', () => {
 
     const { signIn } = useProvider(UserServiceImpl)
 
-    const { token } = await signIn({ username: 'USERNAME', password: 'PASSWORD' })
+    const res = await signIn({ username: 'USERNAME', password: 'PASSWORD' })
 
-    expect(token).toBe('TOKEN')
+    expect(res.token).toBe('TOKEN')
   })
 })

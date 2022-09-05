@@ -1,19 +1,16 @@
 import { Controller } from '../defineController'
 import { Provider } from '../defineProvider'
 
-export interface ModuleOptions {
-  controller?: Controller<object>
+export interface ModuleOptions<T extends object> {
+  controller: Controller<T>
   providers?: Provider<unknown>[]
 }
 
-export interface Module {
-  controller?: Controller<object>
+export interface Module<T extends object> {
+  controller: Controller<T>
   providers: Provider<unknown>[]
 }
 
-export const defineModule = (options: ModuleOptions): Module => {
-  return {
-    controller: options.controller,
-    providers: options.providers || []
-  }
+export const defineModule = <T extends object>(options: ModuleOptions<T>): Module<T> => {
+  return { controller: options.controller, providers: [] }
 }

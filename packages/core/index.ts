@@ -1,4 +1,5 @@
 export * from './defineProvider'
 export * from './defineController'
 export * from './defineModule'
+export * from './useProvider'
 export * from './useModule'
