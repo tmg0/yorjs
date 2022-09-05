@@ -1,1 +1,1 @@
-import * from './defineController'
+export * from './defineProvider'
