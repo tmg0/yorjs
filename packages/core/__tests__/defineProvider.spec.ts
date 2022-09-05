@@ -1,7 +1,7 @@
 import { defineProvider } from '../'
 
 describe('define provider', () => {
-  it('should have provider dependencies metadata', () => {
+  it('should have provider dependencies in metadata', () => {
     interface SignInDto {
       username: string
       password: string
