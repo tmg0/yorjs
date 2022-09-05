@@ -1,3 +1,4 @@
+import { reactive } from 'vue'
 import { defineProvider, defineController } from '../'
 
 describe('define controller', () => {
@@ -28,7 +29,7 @@ describe('define controller', () => {
     })).dependencies(UserApiImpl)
 
     const UserController = defineController((userService: UserService) => {
-      const usernameSignInForm = { username: '', password: '' }
+      const usernameSignInForm = reactive({ username: '', password: '' })
 
       const signIn = () => {
         userService.signIn(usernameSignInForm)

@@ -1,18 +1,19 @@
+import { Controller } from '../defineController'
 import { Provider } from '../defineProvider'
 
 export interface ModuleOptions {
-  controllers?: Provider<unknown>[]
+  controller?: Controller<object>
   providers?: Provider<unknown>[]
 }
 
 export interface Module {
-  controllers?: Provider<unknown>[]
+  controller?: Controller<object>
   providers: Provider<unknown>[]
 }
 
 export const defineModule = (options: ModuleOptions): Module => {
   return {
-    controllers: options.controllers || [],
+    controller: options.controller,
     providers: options.providers || []
   }
 }
