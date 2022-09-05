@@ -23,6 +23,6 @@ describe('define provider', () => {
       }
     })).dependencies(UserApiImpl)
 
-    expect(UserService.metadata.dependencies.length === 1).toBe(true)
+    expect(UserService.metadata.dependencies.length).toBe(1)
   })
 })
