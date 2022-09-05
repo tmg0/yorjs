@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useModule } from '../../../packages/core'
-import { UserModule } from './modules/user.module'
+import { UserModule } from './modules/user/user.module'
 
 const { usernameSignInForm, token, signIn } = useModule(UserModule)
 </script>
