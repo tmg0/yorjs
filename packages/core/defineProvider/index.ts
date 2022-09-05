@@ -1,3 +1,5 @@
+import { flatten } from '@yor/shared'
+
 export interface ProviderMetadata {
   dependencies: any
 }
@@ -10,8 +12,8 @@ export class Provider<T> {
     this.provider = provider
   }
 
-  dependencies<T>(args: T) {
-    this.metadata.dependencies = args
+  dependencies(...dependencies: Array<unknown>) {
+    this.metadata.dependencies = flatten(dependencies)
     return this
   }
 }
