@@ -2,8 +2,8 @@
   "name": "@yor/core",
   "version": "1.0.0",
   "description": "",
-  "main": "./index.ts",
-  "types": "./index.d.ts",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

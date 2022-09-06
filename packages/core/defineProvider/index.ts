@@ -5,6 +5,7 @@ export interface ProviderMetadata {
 }
 
 export class Provider<T> {
+  public instance?: T
   public getter: (args?: any) => T
   public metadata: ProviderMetadata = { dependencies: [] }
 
