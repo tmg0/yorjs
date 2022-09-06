@@ -1,3 +1,4 @@
+import { Interceptor } from '../defineInterceptor'
 import { flatten } from '../_utils/shared'
 
 export interface ProviderMetadata {
@@ -7,6 +8,7 @@ export interface ProviderMetadata {
 export class Provider<T> {
   public instance?: T
   public getter: (args?: any) => T
+  public interceptors?: Interceptor[]
   public metadata: ProviderMetadata = { dependencies: [] }
 
   constructor(getter: (args?: any) => T) {
@@ -15,6 +17,11 @@ export class Provider<T> {
 
   dependencies(...dependencies: Array<unknown>) {
     this.metadata.dependencies = flatten(dependencies)
+    return this
+  }
+
+  useInterceptors(...interceptors: Array<unknown>) {
+    this.interceptors = flatten(interceptors)
     return this
   }
 }

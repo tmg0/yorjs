@@ -1,6 +1,12 @@
 import { Provider } from '../defineProvider'
 
 export const useProvider = <T>(options: Provider<T>): T => {
+  if (options.interceptors) {
+    options.interceptors.forEach((before) => {
+      before(options)
+    })
+  }
+
   if (options.instance) return options.instance
 
   const { getter, metadata } = options
