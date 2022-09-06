@@ -9,7 +9,7 @@ const esbuildPlugin = esbuild()
 const dtsPlugin = dts()
 const jsonPlugin = json()
 
-for (const { name, build, cjs, dts } of packages) {
+for (const { name, build, cjs, dts, mjs } of packages) {
   if (!build) continue
 
   const functionNames = ['index']
@@ -19,6 +19,13 @@ for (const { name, build, cjs, dts } of packages) {
       fn === 'index' ? `packages/${name}/index.ts` : `packages/${name}/${fn}/index.ts`
 
     const output: OutputOptions[] = []
+
+    if (mjs !== false) {
+      output.push({
+        file: `packages/${name}/dist/${fn}.mjs`,
+        format: 'es'
+      })
+    }
 
     if (cjs !== false) {
       output.push({

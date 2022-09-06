@@ -24,6 +24,7 @@ export const packages: PackageManifest[] = [
     name: 'core',
     display: 'yor',
     build: true,
-    cjs: true
+    cjs: true,
+    mjs: true
   }
 ]
