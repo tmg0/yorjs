@@ -1,6 +1,6 @@
 import { reactive, ref } from 'vue'
-import { defineController } from '../../../../../packages/core'
-import { UserService } from '../interfaces/user-service.interface'
+import { defineController } from '@yor/core'
+import { UserService } from './interfaces/user-service.interface'
 import { UserServiceImpl } from './user.service'
 
 const UserController = defineController((userService: UserService) => {
