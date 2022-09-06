@@ -1,13 +1,17 @@
 import { defineProvider } from '@yor/core'
 import { SignInDto } from './dto/sign-in.dto'
-import { UserRequest } from './interfaces/user-request.interface'
+import { UserRepository } from './interfaces/user-repository.interface'
 import { UserService } from './interfaces/user-service.interface'
-import { UserRequestImpl } from './user.request'
+import { UserRepositoryImpl } from './user.repository'
 
-const UserServiceImpl = defineProvider<UserService>((userRequest: UserRequest) => ({
+const UserServiceImpl = defineProvider<UserService>((userRepository: UserRepository) => ({
   signIn(data: SignInDto) {
-    return userRequest.signIn(data)
+    return userRepository.signIn(data)
+  },
+
+  fetchUser() {
+    return userRepository.fetchUser()
   }
-})).dependencies(UserRequestImpl)
+})).dependencies(UserRepositoryImpl)
 
 export { UserServiceImpl }
