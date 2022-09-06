@@ -9,8 +9,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@yor/shared": "workspace:^1.0.0"
-  }
+  "license": "MIT"
 }

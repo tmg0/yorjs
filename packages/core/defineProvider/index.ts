@@ -1,4 +1,4 @@
-import { flatten } from '@yor/shared'
+import { flatten } from '../_utils/shared'
 
 export interface ProviderMetadata {
   dependencies: any
