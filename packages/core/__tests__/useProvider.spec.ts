@@ -1,5 +1,4 @@
-import { defineProvider } from '../defineProvider'
-import { useProvider } from '../useProvider'
+import { defineProvider, useProvider } from '../'
 
 interface SignInDto {
   username: string

@@ -1,6 +1,5 @@
-import { defineInterceptor } from '../defineInterceptor'
-import { defineProvider, Provider } from '../defineProvider'
-import { useProvider } from '../useProvider'
+import { defineInterceptor, defineProvider, useProvider } from '../'
+import { Provider } from '../src/defineProvider'
 
 describe('define interactor', () => {
   it('should has a instance', () => {

@@ -19,8 +19,6 @@ export class Controller<T extends object> {
   }
 }
 
-export const defineController = <T extends object>(
-  getter: (args?: any) => T
-): Controller<T> => {
+export const defineController = <T extends object>(getter: (args?: any) => T): Controller<T> => {
   return new Controller<T>(getter)
 }
