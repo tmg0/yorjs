@@ -5,11 +5,8 @@ import type { OutputOptions, RollupOptions } from 'rollup'
 import { packages } from './meta/packages'
 
 const configs: RollupOptions[] = []
-const esbuildPlugin = esbuild()
-const dtsPlugin = dts()
-const jsonPlugin = json()
 
-for (const { name, build, cjs, dts, mjs } of packages) {
+for (const { name, build } of packages) {
   if (!build) continue
 
   const functionNames = ['index']
@@ -18,39 +15,26 @@ for (const { name, build, cjs, dts, mjs } of packages) {
     const input =
       fn === 'index' ? `packages/${name}/index.ts` : `packages/${name}/${fn}/index.ts`
 
-    const output: OutputOptions[] = []
-
-    if (mjs !== false) {
-      output.push({
-        file: `packages/${name}/dist/${fn}.mjs`,
-        format: 'es'
-      })
-    }
-
-    if (cjs !== false) {
-      output.push({
-        file: `packages/${name}/dist/${fn}.cjs`,
-        format: 'cjs'
-      })
-    }
+    const output: OutputOptions[] = [
+      { file: `packages/${name}/dist/${fn}.mjs`, format: 'es' },
+      { file: `packages/${name}/dist/${fn}.cjs`, format: 'cjs' }
+    ]
 
     configs.push({
       input,
       output,
-      plugins: [esbuildPlugin, jsonPlugin],
+      plugins: [esbuild(), json()],
       external: []
     })
 
-    if (dts !== false) {
-      configs.push({
-        input,
-        output: {
-          file: `packages/${name}/dist/${fn}.d.ts`,
-          format: 'es'
-        },
-        plugins: [dtsPlugin]
-      })
-    }
+    configs.push({
+      input,
+      output: {
+        file: `packages/${name}/dist/${fn}.d.ts`,
+        format: 'es'
+      },
+      plugins: [dts()]
+    })
   }
 }
 
