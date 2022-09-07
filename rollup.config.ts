@@ -3,6 +3,7 @@ import dts from 'rollup-plugin-dts'
 import json from '@rollup/plugin-json'
 import type { OutputOptions, RollupOptions } from 'rollup'
 import { packages } from './meta/packages'
+import { name as iifeName } from './package.json'
 
 const configs: RollupOptions[] = []
 
@@ -12,12 +13,13 @@ for (const { name, build } of packages) {
   const functionNames = ['index']
 
   for (const fn of functionNames) {
-    const input =
-      fn === 'index' ? `packages/${name}/index.ts` : `packages/${name}/${fn}/index.ts`
+    const input = fn === 'index' ? `packages/${name}/index.ts` : `packages/${name}/${fn}/index.ts`
 
     const output: OutputOptions[] = [
       { file: `packages/${name}/dist/${fn}.mjs`, format: 'es' },
-      { file: `packages/${name}/dist/${fn}.cjs`, format: 'cjs' }
+      { file: `packages/${name}/dist/${fn}.cjs`, format: 'cjs' },
+      { file: `packages/${name}/dist/${fn}.iife.js`, format: 'iife', name: iifeName },
+      { file: `packages/${name}/dist/${fn}.iife.min.js`, format: 'iife', name: iifeName }
     ]
 
     configs.push({
