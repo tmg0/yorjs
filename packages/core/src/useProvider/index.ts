@@ -1,11 +1,8 @@
 import { Provider } from '../defineProvider'
+import { isFunction, isPromise } from '../_utils/shared'
 
 export const useProvider = <T>(options: Provider<T>): T => {
-  if (options.interceptors) {
-    options.interceptors.forEach((before) => {
-      before(options)
-    })
-  }
+  const interceptors = options.interceptors || []
 
   if (options.instance) return options.instance
 
@@ -20,5 +17,42 @@ export const useProvider = <T>(options: Provider<T>): T => {
   })
 
   options.instance = getter(...dependencies)
+
+  if (interceptors.length) {
+    for (const key in options.instance) {
+      if (!isFunction(options.instance[key])) continue
+
+      const event: any = options.instance[key]
+      options.instance[key] = function (...args: any) {
+        const afterInterceptors: any[] = []
+
+        interceptors.forEach((before) => {
+          afterInterceptors.push(before(options))
+        })
+
+        const res = event(args)
+
+        if (!isPromise(res)) {
+          afterInterceptors.forEach((after) => {
+            after()
+          })
+
+          return res
+        }
+
+        return new Promise((resolve, reject) => {
+          res
+            .then((promiseRes: any) => {
+              arr.forEach((after) => {
+                after()
+              })
+              resolve(promiseRes)
+            })
+            .catch(reject)
+        })
+      } as any
+    }
+  }
+
   return options.instance
 }
