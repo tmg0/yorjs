@@ -1,4 +1,4 @@
-import { defineProvider, useProvider } from '../'
+import { defineGuard, defineProvider, useProvider } from '../'
 
 interface SignInDto {
   username: string
@@ -18,6 +18,10 @@ const UserApiImpl = defineProvider<UserApi>(() => ({
     return Promise.resolve({ token: 'TOKEN', ...data })
   }
 }))
+
+const AccessGuard = defineGuard(() => {
+  return true
+})
 
 const UserServiceImpl = defineProvider<UserService>((userApi: UserApi) => ({
   signIn(data: SignInDto) {
@@ -39,5 +43,11 @@ describe('use provider', () => {
     const s2 = useProvider(UserServiceImpl)
 
     expect(s1).toBe(s2)
+  })
+
+  it('should guard before generate provider instance', () => {
+    useProvider(UserServiceImpl.useGuards(AccessGuard))
+
+    expect(1).toBe(1)
   })
 })

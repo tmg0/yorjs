@@ -3,22 +3,24 @@ import { Provider } from '../src/defineProvider'
 
 describe('define interactor', () => {
   it('should log in console before and after event', async () => {
+    const arr: string[] = []
+
     const logging = defineInterceptor((context: Provider<any>) => {
-      console.log('Before...')
+      arr.push('Before...')
 
       return () => {
-        console.log('After..')
+        arr.push('After...')
       }
     })
 
     const provider = defineProvider(() => ({
-      do(): Promise<string> {
-        console.log('Doing')
+      do(): Promise<void> {
+        arr.push('Doing')
 
         return new Promise((resolve) => {
           setTimeout(() => {
-            console.log('Done')
-            resolve('Destory')
+            arr.push('Done')
+            resolve()
           }, 3000)
         })
       }
@@ -26,8 +28,8 @@ describe('define interactor', () => {
 
     const events = useProvider(provider)
 
-    const message = await events.do()
+    await events.do()
 
-    expect(message).toBe('Destory')
+    expect(arr.includes('Done')).toBe(true)
   })
 })

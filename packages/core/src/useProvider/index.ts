@@ -2,7 +2,28 @@ import { Provider } from '../defineProvider'
 import { isFunction, isPromise } from '../_utils/shared'
 
 export const useProvider = <T>(options: Provider<T>): T => {
+  let isValidateGuard = true
   const interceptors = options.interceptors || []
+  const guards = options.guards || []
+
+  for (const guard of guards) {
+    if (!isValidateGuard) break
+
+    const res = guard.getter(options)
+    if (isPromise(res)) {
+      ;(res as Promise<boolean>)
+        .then((valid) => {
+          if (!valid) isValidateGuard = false
+        })
+        .catch(() => {
+          isValidateGuard = false
+        })
+    } else {
+      isValidateGuard = res as boolean
+    }
+  }
+
+  if (!isValidateGuard) throw new Error()
 
   if (options.instance) return options.instance
 
