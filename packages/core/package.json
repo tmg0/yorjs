@@ -2,10 +2,10 @@
   "name": "@yor/core",
   "version": "1.0.0",
   "description": "",
-  "main": "./index.cjs",
-  "module": "./index.mjs",
-  "unpkg": "./index.iife.min.js",
-  "jsdelivr": "./index.iife.min.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "unpkg": "./dist/index.iife.min.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
