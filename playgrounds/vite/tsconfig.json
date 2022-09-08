@@ -4,7 +4,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@yor/core": ["../../packages/core"]
+      "@yorjs/core": ["../../packages/core"]
     }
   }
 }

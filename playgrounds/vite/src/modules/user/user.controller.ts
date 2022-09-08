@@ -1,5 +1,5 @@
 import { reactive, ref, watch } from 'vue'
-import { defineController } from '@yor/core'
+import { defineController } from '@yorjs/core'
 import { UserService } from './interfaces/user-service.interface'
 import { UserServiceImpl } from './user.service'
 

@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@yor/core': resolve(__dirname, '../../packages/core/index.ts')
+      '@yorjs/core': resolve(__dirname, '../../packages/core/index.ts')
     }
   }
 })

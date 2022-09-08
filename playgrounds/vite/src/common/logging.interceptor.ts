@@ -1,4 +1,4 @@
-import { defineInterceptor } from '@yor/core'
+import { defineInterceptor } from '@yorjs/core'
 
 export const LoggingInterceptor = defineInterceptor((context) => {
   console.log('Before...')

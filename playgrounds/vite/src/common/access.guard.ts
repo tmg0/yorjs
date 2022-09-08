@@ -1,4 +1,4 @@
-import { defineGuard } from '@yor/core'
+import { defineGuard } from '@yorjs/core'
 
 export const AccessGuard = defineGuard(() => {
   return !!localStorage.getItem('access_token')

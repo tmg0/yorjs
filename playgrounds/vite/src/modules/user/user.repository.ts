@@ -1,4 +1,4 @@
-import { defineProvider } from '@yor/core'
+import { defineProvider } from '@yorjs/core'
 import { UserRepository } from './interfaces/user-repository.interface'
 import { SignInDto } from './dto/sign-in.dto'
 

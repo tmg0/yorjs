@@ -1,4 +1,4 @@
-import { defineProvider } from '@yor/core'
+import { defineProvider } from '@yorjs/core'
 import { LoggingInterceptor } from '../../common/logging.interceptor'
 import { AccessGuard } from '../../common/access.guard'
 import { UserRepository } from './interfaces/user-repository.interface'

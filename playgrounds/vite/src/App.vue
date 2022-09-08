@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useModule } from '@yor/core'
+import { useModule } from '@yorjs/core'
 import { UserModule } from './modules/user/user.module'
 
 const { user, usernameSignInForm, token, signIn, fetchUser } = useModule(UserModule)
