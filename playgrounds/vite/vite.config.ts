@@ -6,8 +6,6 @@ import { resolve } from 'node:path'
 export default defineConfig({
   plugins: [vue()],
   resolve: {
-    alias: {
-      '@yorjs/core': resolve(__dirname, '../../packages/core/index.ts')
-    }
+    alias: {}
   }
 })
