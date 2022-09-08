@@ -4,7 +4,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@yor/core": ["../../packages/core/index.ts"]
+      "@yor/core": ["../../packages/core"]
     }
   }
 }
