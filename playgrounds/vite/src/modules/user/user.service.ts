@@ -1,4 +1,5 @@
 import { defineProvider } from '@yor/core'
+import { LoggingInterceptor } from '../../common/logging.interceptor'
 import { SignInDto } from './dto/sign-in.dto'
 import { UserRepository } from './interfaces/user-repository.interface'
 import { UserService } from './interfaces/user-service.interface'
@@ -12,6 +13,8 @@ const UserServiceImpl = defineProvider<UserService>((userRepository: UserReposit
   fetchUser() {
     return userRepository.fetchUser()
   }
-})).dependencies(UserRepositoryImpl)
+}))
+  .dependencies(UserRepositoryImpl)
+  .useInterceptors(LoggingInterceptor)
 
 export { UserServiceImpl }

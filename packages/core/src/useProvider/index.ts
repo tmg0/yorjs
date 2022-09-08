@@ -26,7 +26,7 @@ export const useProvider = <T>(options: Provider<T>): T => {
       options.instance[key] = function (...args: any) {
         const afterInterceptors: any[] = []
 
-        interceptors.forEach((before) => {
+        interceptors.forEach(({ getter: before }) => {
           afterInterceptors.push(before(options))
         })
 

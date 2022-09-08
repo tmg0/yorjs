@@ -20,7 +20,7 @@ export class Provider<T> {
     return this
   }
 
-  useInterceptors(...interceptors: Array<unknown>) {
+  useInterceptors(...interceptors: Array<Interceptor>) {
     this.interceptors = flatten(interceptors)
     return this
   }
