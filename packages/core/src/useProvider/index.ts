@@ -43,7 +43,7 @@ export const useProvider = <T>(options: Provider<T>): T => {
         return new Promise((resolve, reject) => {
           res
             .then((promiseRes: any) => {
-              arr.forEach((after) => {
+              afterInterceptors.forEach((after) => {
                 after()
               })
               resolve(promiseRes)
