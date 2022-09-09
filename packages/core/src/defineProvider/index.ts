@@ -2,6 +2,8 @@ import { Interceptor } from '../defineInterceptor'
 import { Guard } from '../defineGuard'
 import { flatten } from '../_utils/shared'
 
+type DependencyPartials<T> = { [P in keyof T]: Provider<T[P]> }
+
 export interface ProviderMetadata {
   dependencies: any
 }
@@ -17,7 +19,7 @@ export class Provider<T> {
     this.getter = getter
   }
 
-  dependencies(...dependencies: Array<unknown>) {
+  dependencies(...dependencies: DependencyPartials<Parameters<Provider<T>['getter']>>) {
     this.metadata.dependencies = flatten(dependencies)
     return this
   }

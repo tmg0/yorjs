@@ -1,4 +1,4 @@
-import { defineProvider } from '../'
+import { defineProvider } from '../index'
 
 describe('define provider', () => {
   it('should have provider dependencies in metadata', () => {
@@ -12,7 +12,7 @@ describe('define provider', () => {
     }
 
     const UserApiImpl = defineProvider<UserApi>(() => ({
-      signIn(data: SignInDto) {
+      signIn(data) {
         return Promise.resolve({ token: 'TOKEN' })
       }
     }))
