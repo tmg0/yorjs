@@ -1,5 +1,4 @@
 {
-  "name": "@yorjs/playground-vite",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -9,8 +8,7 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "vue": "^3.2.38",
-    "@yorjs/core": "^1.0.0"
+    "vue": "^3.2.38"
   },
   "devDependencies": {
     "@types/node": "^16.11.56",
