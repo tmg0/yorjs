@@ -7,7 +7,7 @@ import { name as iifeName } from './package.json'
 
 const configs: RollupOptions[] = []
 
-for (const { name, build } of packages) {
+for (const { name, build, external } of packages) {
   if (!build) continue
 
   const functionNames = ['index']
@@ -26,7 +26,7 @@ for (const { name, build } of packages) {
       input,
       output,
       plugins: [esbuild(), json()],
-      external: []
+      external
     })
 
     configs.push({
