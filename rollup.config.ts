@@ -7,7 +7,7 @@ import { name as iifeName } from './package.json'
 
 const configs: RollupOptions[] = []
 
-for (const { name, build, external } of packages) {
+for (const { name, build, external, globals } of packages) {
   if (!build) continue
 
   const functionNames = ['index']
@@ -18,8 +18,8 @@ for (const { name, build, external } of packages) {
     const output: OutputOptions[] = [
       { file: `packages/${name}/dist/${fn}.mjs`, format: 'es' },
       { file: `packages/${name}/dist/${fn}.cjs`, format: 'cjs' },
-      { file: `packages/${name}/dist/${fn}.iife.js`, format: 'iife', name: iifeName },
-      { file: `packages/${name}/dist/${fn}.iife.min.js`, format: 'iife', name: iifeName }
+      { file: `packages/${name}/dist/${fn}.iife.js`, format: 'iife', name: iifeName, globals },
+      { file: `packages/${name}/dist/${fn}.iife.min.js`, format: 'iife', name: iifeName, globals }
     ]
 
     configs.push({
