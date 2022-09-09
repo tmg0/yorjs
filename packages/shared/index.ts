@@ -1,7 +1,4 @@
-export const flatten = <T extends any[]>(arr: T): any => {
-  const flat = [...arr]
-  return flat
-}
+export const flatten = <T extends any[]>(arr: T): any => [...arr]
 
 export const isFunction = (val: any): boolean => typeof val === 'function'
 
