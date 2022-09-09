@@ -33,7 +33,10 @@ importers:
       vue: 3.2.38
 
   packages/core:
-    specifiers: {}
+    specifiers:
+      '@yorjs/shared': workspace:^1.0.0
+    dependencies:
+      '@yorjs/shared': link:../shared
 
 packages:
 

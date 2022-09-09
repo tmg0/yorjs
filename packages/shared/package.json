@@ -1,5 +1,5 @@
 {
-  "name": "@yorjs/core",
+  "name": "@yorjs/shared",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.cjs",
@@ -11,8 +11,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "@yorjs/shared": "workspace:^1.0.0"
-  }
+  "license": "MIT"
 }

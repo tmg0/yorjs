@@ -1,6 +1,6 @@
+import { flatten } from '@yorjs/shared'
 import { Interceptor } from '../defineInterceptor'
 import { Guard } from '../defineGuard'
-import { flatten } from '../_utils/shared'
 
 type DependencyPartials<T> = { [P in keyof T]: Provider<T[P]> }
 

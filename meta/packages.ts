@@ -19,4 +19,7 @@ interface PackageManifest {
   copy?: string[]
 }
 
-export const packages: PackageManifest[] = [{ name: 'core', display: 'yorjs', build: true }]
+export const packages: PackageManifest[] = [
+  { name: 'core', display: 'yorjs', build: true },
+  { name: 'shared', display: 'yorjs', build: true }
+]

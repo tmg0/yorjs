@@ -1,5 +1,5 @@
+import { isFunction, isPromise } from '@yorjs/shared'
 import { Provider } from '../defineProvider'
-import { isFunction, isPromise } from '../_utils/shared'
 
 export const useProvider = <T>(options: Provider<T>): T => {
   const interceptors = options.interceptors || []

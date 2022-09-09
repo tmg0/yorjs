@@ -1,4 +1,4 @@
-import { flatten } from '../_utils/shared'
+import { flatten } from '@yorjs/shared'
 import { Provider } from '../defineProvider'
 
 export interface ControllerMetadata {
