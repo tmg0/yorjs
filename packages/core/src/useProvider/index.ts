@@ -52,11 +52,16 @@ export const useProvider = <T>(options: Provider<T>): T => {
           res
             .then((promiseRes: any) => {
               afterInterceptors.forEach((after) => {
-                after()
+                after(promiseRes)
               })
               resolve(promiseRes)
             })
-            .catch(reject)
+            .catch((error: any) => {
+              interceptors.forEach(({ errorHandler }) => {
+                errorHandler && errorHandler(error)
+              })
+              reject(error)
+            })
         })
       } as any
     }

@@ -1,11 +1,10 @@
 import { defineInterceptor, defineProvider, useProvider } from '../'
-import { Provider } from '../src/defineProvider'
 
 describe('define interactor', () => {
   it('should log in console before and after event', async () => {
     const arr: string[] = []
 
-    const logging = defineInterceptor((context: Provider<any>) => {
+    const logging = defineInterceptor(() => {
       arr.push('Before...')
 
       return () => {
