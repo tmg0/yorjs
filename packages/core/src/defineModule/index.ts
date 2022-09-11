@@ -6,11 +6,16 @@ export interface ModuleOptions<T extends object> {
   providers?: Provider<unknown>[]
 }
 
-export interface Module<T extends object> {
-  controller: Controller<T>
-  providers: Provider<unknown>[]
+export class Module<T extends object> {
+  public controller: Controller<T>
+  public providers: Provider<unknown>[]
+
+  constructor(options: ModuleOptions<any>) {
+    this.controller = options.controller
+    this.providers = options.providers || []
+  }
 }
 
 export const defineModule = <T extends object>(options: ModuleOptions<T>): Module<T> => {
-  return { controller: options.controller, providers: [] }
+  return new Module<T>(options)
 }

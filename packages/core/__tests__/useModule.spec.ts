@@ -19,13 +19,13 @@ describe('use module', () => {
     interface UserService extends UserApi {}
 
     const UserApiImpl = defineProvider<UserApi>(() => ({
-      signIn(data: SignInDto) {
+      signIn(data) {
         return Promise.resolve({ token: 'TOKEN', ...data })
       }
     }))
 
     const UserServiceImpl = defineProvider<UserService>((userApi: UserApi) => ({
-      signIn(data: SignInDto) {
+      signIn(data) {
         return userApi.signIn(data)
       }
     })).dependencies(UserApiImpl)
