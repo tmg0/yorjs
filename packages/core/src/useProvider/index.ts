@@ -1,41 +1,18 @@
 import { isFunction, isPromise } from '@yorjs/shared'
+import { Interceptor } from '../defineInterceptor'
 import { Provider } from '../defineProvider'
 
-export const useProvider = <T>(options: Provider<T>): T => {
-  const interceptors = options.interceptors || []
-  const guards = options.guards || []
-
-  for (const guard of guards) {
-    if (!guard.getter(options)) {
-      guard.errorHandler && guard.errorHandler(options)
-      break
-    }
-  }
-
-  if (options.instance) return options.instance
-
-  const { getter, metadata } = options
-
-  if (!metadata.dependencies.length) options.instance = getter()
-
-  const dependencies: any = []
-
-  metadata.dependencies.forEach((provider: any) => {
-    dependencies.push(useProvider(provider))
-  })
-
-  options.instance = getter(...dependencies)
-
+export const injectInterceptors = <T, I>(context: Provider<T>, interceptors: Interceptor[], instance: I): I => {
   if (interceptors.length) {
-    for (const key in options.instance) {
-      if (!isFunction(options.instance[key])) continue
+    for (const key in instance) {
+      if (!isFunction(instance[key])) continue
 
-      const event: any = options.instance[key]
-      options.instance[key] = function (...args: any) {
+      const event: any = instance[key]
+      instance[key] = function (...args: any) {
         const afterInterceptors: any[] = []
 
         interceptors.forEach(({ getter: before }) => {
-          afterInterceptors.push(before(options))
+          afterInterceptors.push(before(context))
         })
 
         const res = event(args)
@@ -67,5 +44,33 @@ export const useProvider = <T>(options: Provider<T>): T => {
     }
   }
 
-  return options.instance
+  return instance
+}
+
+export const useProvider = <T>(options: Provider<T>): T => {
+  const interceptors = options.interceptors || []
+  const guards = options.guards || []
+
+  for (const guard of guards) {
+    if (!guard.getter(options)) {
+      guard.errorHandler && guard.errorHandler(options)
+      break
+    }
+  }
+
+  const { getter, metadata } = options
+
+  if (!metadata.dependencies.length) return getter()
+
+  const dependencies: any = []
+
+  metadata.dependencies.forEach((provider: any) => {
+    dependencies.push(useProvider(provider))
+  })
+
+  const instance = getter(...dependencies)
+
+  injectInterceptors(options, interceptors, instance)
+
+  return instance
 }
