@@ -2,6 +2,10 @@ import { isFunction, isPromise } from '@yorjs/shared'
 import { Interceptor } from '../defineInterceptor'
 import { Provider } from '../defineProvider'
 
+export interface InjectHooks<T> {
+  created(token: symbol, context: T): void
+}
+
 export const injectInterceptors = <T, I>(context: Provider<T>, interceptors: Interceptor[], instance: I): I => {
   if (interceptors.length) {
     for (const key in instance) {
@@ -47,7 +51,7 @@ export const injectInterceptors = <T, I>(context: Provider<T>, interceptors: Int
   return instance
 }
 
-export const useProvider = <T>(options: Provider<T>): T => {
+export const useProvider = <T>(options: Provider<T>, hooks?: InjectHooks<T>): T => {
   const interceptors = options.interceptors || []
   const guards = options.guards || []
 
@@ -60,17 +64,22 @@ export const useProvider = <T>(options: Provider<T>): T => {
 
   const { getter, metadata } = options
 
-  if (!metadata.dependencies.length) return getter()
+  if (!metadata.dependencies.length) {
+    const instance = getter()
+    if (hooks) hooks.created(options.token, instance)
+    return instance
+  }
 
   const dependencies: any = []
 
   metadata.dependencies.forEach((provider: any) => {
-    dependencies.push(useProvider(provider))
+    dependencies.push(useProvider(provider, hooks))
   })
 
   const instance = getter(...dependencies)
 
   injectInterceptors(options, interceptors, instance)
 
+  if (hooks) hooks.created(options.token, instance)
   return instance
 }

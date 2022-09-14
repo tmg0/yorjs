@@ -28,7 +28,7 @@ describe('use module', () => {
       signIn(data) {
         return userApi.signIn(data)
       }
-    })).dependencies(UserApiImpl)
+    }))
 
     const UserController = defineController((userService: UserService) => {
       const usernameSignInForm = reactive({ username: '', password: '' })
@@ -41,9 +41,12 @@ describe('use module', () => {
         usernameSignInForm,
         signIn
       }
-    }).dependencies(UserServiceImpl)
+    })
 
-    const UserModule = defineModule({ controller: UserController })
+    const UserModule = defineModule({
+      controller: UserController.dependencies(UserServiceImpl),
+      providers: [UserServiceImpl.dependencies(UserApiImpl)]
+    })
 
     const user = useModule(UserModule)
 

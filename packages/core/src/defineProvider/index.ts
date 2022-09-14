@@ -9,7 +9,7 @@ export interface ProviderMetadata {
 }
 
 export class Provider<T> {
-  public instance?: T
+  public token: symbol = Symbol()
   public getter: (args?: any) => T
   public interceptors?: Interceptor[]
   public guards?: Guard[]
