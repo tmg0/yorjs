@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "serve:vite": "pnpm -C ./playgrounds/vite dev",
+    "play:vite": "pnpm -C ./playgrounds/vite dev",
+    "dev": "rollup --config rollup.config.ts --configPlugin typescript --watch",
     "build": "rollup --config rollup.config.ts --configPlugin typescript",
     "test": "jest"
   },
