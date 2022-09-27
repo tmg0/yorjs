@@ -1,10 +1,14 @@
+import { AxiosInstance } from 'axios'
 import { defineProvider } from '@yorjs/core'
 import { UserRepository } from './interfaces/user-repository.interface'
-import { SignInDto } from './dto/sign-in.dto'
+import { RequestMethod } from '../../common/request-method.enum'
 
-export const UserRepositoryImpl = defineProvider<UserRepository>(() => ({
-  signIn(data: SignInDto) {
-    return Promise.resolve({ token: 'TOKEN', ...data })
+export const USER_SIGN_IN = '/backend/user/sign-in'
+
+export const UserRepositoryImpl = defineProvider<UserRepository>((request: AxiosInstance) => ({
+  async signIn(data) {
+    const res = await request({ url: USER_SIGN_IN, method: RequestMethod.POST, data })
+    return res.data
   },
 
   fetchUser() {
