@@ -94,5 +94,55 @@ import { useModule } from '@yorjs/core'
 const { message } = useModule(module)
 ```
 
+### `defineGuard`
+
+Define a guard for a controller or provider.
+
+Basic Usage
+
+```
+import { defineGuard } from '@yorjs/core'
+
+export const randomGuard = defineGuard(() => {
+  return Math.random() <= 0.5
+}).error((context) => {
+  // ...
+})
+```
+
+Binding guards
+
+```
+import { providerImpl } from '../'
+
+providerImpl.useGuards(randomGuard, otherGuard)
+```
+
+### `defineInterceptor`
+
+Define a interceptor for a controller or provider.
+
+Basic Usage
+
+```
+import { defineInterceptor } from '@yorjs/core'
+
+export const loggingInterceptor = defineInterceptor((context) => {
+  // before...
+
+  return () => {
+    // after...
+  }
+})
+```
+
+Binding interceptors
+
+```
+import { providerImpl } from '../'
+
+providerImpl.useGuards(loggingInterceptor, otherInterceptor)
+```
+
 ## License
 [MIT](./LICENSE)
