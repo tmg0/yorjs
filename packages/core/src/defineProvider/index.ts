@@ -10,12 +10,12 @@ export interface ProviderMetadata {
 
 export class Provider<T> {
   public token: symbol = Symbol()
-  public getter: (args?: any) => T
+  public getter: (...args: any[]) => T
   public interceptors?: Interceptor[]
   public guards?: Guard[]
   public metadata: ProviderMetadata = { dependencies: [] }
 
-  constructor(getter: (args?: any) => T) {
+  constructor(getter: (...args: any[]) => T) {
     this.getter = getter
   }
 
@@ -35,6 +35,6 @@ export class Provider<T> {
   }
 }
 
-export const defineProvider = <T>(getter: (args?: any) => T): Provider<T> => {
+export const defineProvider = <T>(getter: (...args: any[]) => T): Provider<T> => {
   return new Provider(getter)
 }
