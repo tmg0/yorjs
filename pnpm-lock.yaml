@@ -32,6 +32,12 @@ importers:
       typescript: 4.8.2
       vue: 3.2.38
 
+  packages/common:
+    specifiers:
+      '@yorjs/core': workspace:^1.0.3
+    dependencies:
+      '@yorjs/core': link:../core
+
   packages/core:
     specifiers:
       '@yorjs/shared': workspace:^1.0.0

@@ -1,0 +1,14 @@
+{
+  "name": "@yorjs/common",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "unpkg": "./dist/index.iife.min.js",
+  "types": "./dist/index.d.ts",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@yorjs/core": "workspace:^1.0.3"
+  }
+}
