@@ -1,8 +1,8 @@
 import { defineProvider } from '@yorjs/core'
-import { WebStorageProvider } from '../interfaces/web-storage-provider.interface'
-import { localStorageProviderImpl } from './local-storage.provider'
+import type { WebStorage } from '../interfaces/web-storage.interface'
+import { localStorageProvider } from './local-storage.provider'
 
-export const webStorageProvider = defineProvider<WebStorageProvider>((storage: Storage) => ({
+export const webStorageProvider = defineProvider<WebStorage>((storage: Storage) => ({
   get(key, def = '') {
     const item = storage.getItem(key)
 
@@ -10,12 +10,15 @@ export const webStorageProvider = defineProvider<WebStorageProvider>((storage: S
       try {
         const data = JSON.parse(item)
 
-        if (!data.expire) return data.value
+        if (!data.expire)
+          return data.value
 
-        if (data.expire >= new Date().getTime()) return data.value
+        if (data.expire >= new Date().getTime())
+          return data.value
 
         storage.removeItem(key)
-      } catch (err) {
+      }
+      catch (err) {
         return def
       }
     }
@@ -24,11 +27,32 @@ export const webStorageProvider = defineProvider<WebStorageProvider>((storage: S
   },
 
   set(key, value, expire) {
-    const stringifyValue = JSON.stringify({ value, expire: expire !== null ? new Date().getTime() + expire : null })
+    const stringifyValue = JSON.stringify({
+      value,
+      expire: expire ? new Date().getTime() + expire : null
+    })
     storage.setItem(key, stringifyValue)
   },
 
   remove(key) {
     storage.removeItem(key)
+  },
+
+  clear() {
+    if (storage.length === 0)
+      return
+
+    const removedKeys: string[] = []
+
+    for (let i = 0; i < storage.length; i++) {
+      const key = storage.key(i)
+      if (!key)
+        continue
+      removedKeys.push(key)
+    }
+
+    for (const key in removedKeys)
+      storage.removeItem(removedKeys[key])
   }
-})).dependencies(localStorageProviderImpl)
+})
+).dependencies(localStorageProvider)

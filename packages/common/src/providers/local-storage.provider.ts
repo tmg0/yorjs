@@ -1,3 +1,3 @@
 import { defineProvider } from '@yorjs/core'
 
-export const localStorageProviderImpl = defineProvider<Storage>(() => localStorage)
+export const localStorageProvider = defineProvider<Storage>(() => localStorage)

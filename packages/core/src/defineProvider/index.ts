@@ -1,6 +1,6 @@
 import { flatten } from '@yorjs/shared'
-import { Interceptor } from '../defineInterceptor'
-import { Guard } from '../defineGuard'
+import type { Interceptor } from '../defineInterceptor'
+import type { Guard } from '../defineGuard'
 
 type DependencyPartials<T> = { [P in keyof T]: Provider<T[P]> }
 
@@ -9,7 +9,7 @@ export interface ProviderMetadata {
 }
 
 export class Provider<T> {
-  public token: symbol = Symbol()
+  public token = Symbol('TOKEN')
   public getter: (...args: any[]) => T
   public interceptors?: Interceptor[]
   public guards?: Guard[]
