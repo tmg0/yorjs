@@ -4,19 +4,26 @@ import type { Guard } from '../defineGuard'
 
 type DependencyPartials<T> = { [P in keyof T]: Provider<T[P]> }
 
+export interface ProviderOptions {
+  singleton?: boolean
+}
+
 export interface ProviderMetadata {
   dependencies: any
 }
 
 export class Provider<T> {
   public token = Symbol('TOKEN')
+  public instance?: T
   public getter: (...args: any[]) => T
   public interceptors?: Interceptor[]
   public guards?: Guard[]
   public metadata: ProviderMetadata = { dependencies: [] }
+  public singleton = false
 
-  constructor(getter: (...args: any[]) => T) {
+  constructor(getter: (...args: any[]) => T, options: ProviderOptions) {
     this.getter = getter
+    this.singleton = !!options?.singleton
   }
 
   dependencies(...dependencies: DependencyPartials<Parameters<Provider<T>['getter']>>) {
@@ -35,6 +42,6 @@ export class Provider<T> {
   }
 }
 
-export const defineProvider = <T>(getter: (...args: any[]) => T): Provider<T> => {
-  return new Provider(getter)
+export const defineProvider = <T>(getter: (...args: any[]) => T, options: ProviderOptions = { singleton: false }): Provider<T> => {
+  return new Provider(getter, options)
 }

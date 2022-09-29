@@ -1,6 +1,6 @@
 import { isFunction, isPromise } from '@yorjs/shared'
-import { Interceptor } from '../defineInterceptor'
-import { Provider } from '../defineProvider'
+import type { Interceptor } from '../defineInterceptor'
+import type { Provider } from '../defineProvider'
 
 export interface InjectHooks<T> {
   created(token: symbol, context: T): void
@@ -9,7 +9,8 @@ export interface InjectHooks<T> {
 export const injectInterceptors = <T, I>(context: Provider<T>, interceptors: Interceptor[], instance: I): I => {
   if (interceptors.length) {
     for (const key in instance) {
-      if (!isFunction(instance[key])) continue
+      if (!isFunction(instance[key]))
+        continue
 
       const event: any = instance[key]
       instance[key] = function (...args: any) {
@@ -55,6 +56,9 @@ export const useProvider = <T>(options: Provider<T>, hooks?: InjectHooks<T>): T 
   const interceptors = options.interceptors || []
   const guards = options.guards || []
 
+  if (options.singleton && options.instance)
+    return options.instance
+
   for (const guard of guards) {
     if (!guard.getter(options)) {
       guard.errorHandler && guard.errorHandler(options)
@@ -66,7 +70,9 @@ export const useProvider = <T>(options: Provider<T>, hooks?: InjectHooks<T>): T 
 
   if (!metadata.dependencies.length) {
     const instance = getter()
-    if (hooks) hooks.created(options.token, instance)
+    options.instance = instance
+    if (hooks)
+      hooks.created(options.token, instance)
     return instance
   }
 
@@ -80,6 +86,9 @@ export const useProvider = <T>(options: Provider<T>, hooks?: InjectHooks<T>): T 
 
   injectInterceptors(options, interceptors, instance)
 
-  if (hooks) hooks.created(options.token, instance)
+  options.instance = instance
+
+  if (hooks)
+    hooks.created(options.token, instance)
   return instance
 }
