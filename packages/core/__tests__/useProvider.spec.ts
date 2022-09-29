@@ -27,7 +27,7 @@ const UserServiceImpl = defineProvider<UserService>((userApi: UserApi) => ({
   signIn(data: SignInDto) {
     return userApi.signIn(data)
   }
-})).dependencies(UserApiImpl)
+}), { singleton: true }).dependencies(UserApiImpl)
 
 describe('use provider', () => {
   it('should have token field in user service', async () => {
