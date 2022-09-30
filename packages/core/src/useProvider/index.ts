@@ -56,8 +56,11 @@ export const useProvider = <T>(options: Provider<T>, hooks?: InjectHooks<T>): T 
   const interceptors = options.interceptors || []
   const guards = options.guards || []
 
-  if (options.singleton && options.instance)
+  if (options.singleton && options.instance) {
+    if (hooks)
+      hooks.created(options.token, options.instance)
     return options.instance
+  }
 
   for (const guard of guards) {
     if (!guard.getter(options)) {
