@@ -1,4 +1,4 @@
-import { Module } from '../defineModule'
+import type { Module } from '../defineModule'
 import { useProvider } from '../useProvider'
 import type { Provider } from '../defineProvider'
 
@@ -7,7 +7,8 @@ type ReactiveController<T extends object> = ReturnType<Module<T>['controller']['
 export const useModule = <T extends object>(module: Module<T>): ReactiveController<T> => {
   const { getter, metadata } = module.controller
 
-  if (!metadata.dependencies.length) return getter()
+  if (!metadata.dependencies.length)
+    return getter()
 
   const dependencies: any[] = []
   const providers: Map<symbol, any> = new Map()
@@ -18,7 +19,8 @@ export const useModule = <T extends object>(module: Module<T>): ReactiveControll
 
   if (module.providers && module.providers.length) {
     for (const provider of module.providers) {
-      if (providers.get(provider.token)) continue
+      if (providers.get(provider.token))
+        continue
       useProvider(provider, { created: onInstanceCreated })
     }
   }
