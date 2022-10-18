@@ -1,6 +1,7 @@
 import { flatten } from '@yorjs/shared'
 import type { Interceptor } from '../defineInterceptor'
 import type { Guard } from '../defineGuard'
+import type { Interface } from '../defineInterface'
 
 type DependencyPartials<T> = { [P in keyof T]: Provider<T[P]> }
 
@@ -10,6 +11,7 @@ export interface ProviderOptions {
 
 export interface ProviderMetadata {
   dependencies: any
+  implements?: Interface
 }
 
 export class Provider<T> {
@@ -28,6 +30,11 @@ export class Provider<T> {
 
   dependencies(...dependencies: DependencyPartials<Parameters<Provider<T>['getter']>>) {
     this.metadata.dependencies = flatten(dependencies)
+    return this
+  }
+
+  implements(i: Interface) {
+    this.metadata.implements = i
     return this
   }
 

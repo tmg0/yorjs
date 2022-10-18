@@ -1,4 +1,5 @@
 export * from './src/defineProvider'
+export * from './src/defineInterface'
 export * from './src/defineController'
 export * from './src/defineModule'
 export * from './src/defineInterceptor'

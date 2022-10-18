@@ -1,4 +1,4 @@
-import { defineProvider } from '../index'
+import { defineInterface, defineProvider } from '../index'
 
 describe('define provider', () => {
   it('should have provider dependencies in metadata', () => {
@@ -11,18 +11,18 @@ describe('define provider', () => {
       signIn(data: SignInDto): Promise<{ token: string }>
     }
 
-    const UserApiImpl = defineProvider<UserApi>(() => ({
-      signIn(data) {
+    const userApi = defineProvider<UserApi>(() => ({
+      signIn(_data) {
         return Promise.resolve({ token: 'TOKEN' })
       }
-    }))
+    })).implements(defineInterface<UserApi>())
 
-    const UserService = defineProvider((userApi: UserApi) => ({
+    const userService = defineProvider((api: UserApi) => ({
       signIn() {
-        userApi.signIn({ username: 'USERNAME', password: 'PASSWORD' })
+        api.signIn({ username: 'USERNAME', password: 'PASSWORD' })
       }
-    })).dependencies(UserApiImpl)
+    })).dependencies(userApi)
 
-    expect(UserService.metadata.dependencies.length).toBe(1)
+    expect(userService.metadata.dependencies.length).toBe(1)
   })
 })
