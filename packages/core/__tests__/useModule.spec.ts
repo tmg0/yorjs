@@ -1,5 +1,5 @@
 import { reactive } from 'vue'
-import { defineController, defineProvider, defineModule, useModule } from '../'
+import { defineController, defineInterface, defineModule, defineProvider, useModule } from '../index'
 
 describe('use module', () => {
   it('should have instance in a single provider', async () => {
@@ -12,25 +12,37 @@ describe('use module', () => {
       token: string
     }
 
-    interface UserApi {
+    const IUserRep = defineInterface<{
       signIn(data: SignInDto): Promise<SignInResDto>
-    }
+    }>()
 
-    interface UserService extends UserApi {}
+    const IUserService = defineInterface<{
+      signIn(data: SignInDto): Promise<SignInResDto>
+    }>()
 
-    const UserApiImpl = defineProvider<UserApi>(() => ({
-      signIn(data) {
+    const IProvider = defineInterface<{
+      get(): string
+    }>()
+
+    const userRep = defineProvider()(() => ({
+      signIn(data: SignInDto) {
         return Promise.resolve({ token: 'TOKEN', ...data })
       }
-    }))
+    })).implements(IUserRep)
 
-    const UserServiceImpl = defineProvider<UserService>((userApi: UserApi) => ({
-      signIn(data) {
-        return userApi.signIn(data)
+    const p = defineProvider()(() => ({
+      get() {
+        return ''
       }
-    }))
+    })).implements(IProvider)
 
-    const UserController = defineController((userService: UserService) => {
+    const userService = defineProvider(IUserRep, IProvider)((rep, p) => ({
+      signIn(data: SignInDto) {
+        return rep.signIn({ ...data, username: p.get() })
+      }
+    })).implements(IUserService)
+
+    const userController = defineController(IUserService)((userService) => {
       const usernameSignInForm = reactive({ username: '', password: '' })
 
       const signIn = () => {
@@ -44,8 +56,8 @@ describe('use module', () => {
     })
 
     const UserModule = defineModule({
-      controller: UserController.dependencies(UserServiceImpl),
-      providers: [UserServiceImpl.dependencies(UserApiImpl)]
+      controller: userController,
+      providers: [userService, userRep, p]
     })
 
     const user = useModule(UserModule)

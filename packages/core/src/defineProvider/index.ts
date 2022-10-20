@@ -4,6 +4,7 @@ import type { Guard } from '../defineGuard'
 import type { Interface } from '../defineInterface'
 
 type DependencyPartials<T> = { [P in keyof T]: Provider<T[P]> }
+type InterfacePartials<T> = { [P in keyof T]: T[P] extends Interface ? T[P]['getter'] : any }
 
 export interface ProviderOptions {
   singleton?: boolean
@@ -11,7 +12,7 @@ export interface ProviderOptions {
 
 export interface ProviderMetadata {
   dependencies: any
-  implements?: Interface
+  interface?: Interface
 }
 
 export class Provider<T> {
@@ -34,7 +35,8 @@ export class Provider<T> {
   }
 
   implements(i: Interface) {
-    this.metadata.implements = i
+    this.metadata.interface = i
+    this.metadata.interface.implements.push(this)
     return this
   }
 
@@ -49,6 +51,21 @@ export class Provider<T> {
   }
 }
 
-export const defineProvider = <T>(getter: (...args: any[]) => T, options: ProviderOptions = { singleton: false }): Provider<T> => {
-  return new Provider(getter, options)
+export const defineProvider = <I extends Interface[]>(...i: I) => {
+  return <T>(getter: (...args: InterfacePartials<I>) => T, options: ProviderOptions = { singleton: false }) => {
+    const instance = new Provider(getter as ((...args: any[]) => T), options)
+    if (i && i.length > 0) {
+      const deps: Provider<any>[] = []
+
+      for (const item of i) {
+        if (item.implements.length > 1 && !instance.dependencies.length)
+          throw new Error('have more than 1 implements')
+
+        const [impl] = item.implements
+        deps.push(impl)
+      }
+      instance.dependencies(...deps)
+    }
+    return instance
+  }
 }
