@@ -1,9 +1,11 @@
-import { defineProvider } from '@yorjs/core'
+import { defineInterface, defineProvider } from '@yorjs/core'
 import type { WebStorage } from '../interfaces/web-storage.interface'
-import { localStorageProvider } from './local-storage.provider'
+import { IStorage } from './local-storage.provider'
 
-export const webStorageProvider = defineProvider<WebStorage>((storage: Storage) => ({
-  get(key, def = '') {
+export const IWebStorage = defineInterface<WebStorage>()
+
+export const webStorageProvider = defineProvider(IStorage)((storage: Storage) => ({
+  get(key: string, def = '') {
     const item = storage.getItem(key)
 
     if (item !== null) {
@@ -26,7 +28,7 @@ export const webStorageProvider = defineProvider<WebStorage>((storage: Storage) 
     return def
   },
 
-  set(key, value, expire) {
+  set(key: string, value: any, expire: number) {
     const stringifyValue = JSON.stringify({
       value,
       expire: expire ? new Date().getTime() + expire : null
@@ -34,7 +36,7 @@ export const webStorageProvider = defineProvider<WebStorage>((storage: Storage) 
     storage.setItem(key, stringifyValue)
   },
 
-  remove(key) {
+  remove(key: string) {
     storage.removeItem(key)
   },
 
@@ -55,4 +57,4 @@ export const webStorageProvider = defineProvider<WebStorage>((storage: Storage) 
       storage.removeItem(removedKeys[key])
   }
 })
-).dependencies(localStorageProvider)
+).implements(IWebStorage)

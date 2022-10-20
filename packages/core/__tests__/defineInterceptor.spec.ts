@@ -12,7 +12,7 @@ describe('define interactor', () => {
       }
     })
 
-    const provider = defineProvider(() => ({
+    const provider = defineProvider()(() => ({
       do(): Promise<void> {
         arr.push('Doing')
 

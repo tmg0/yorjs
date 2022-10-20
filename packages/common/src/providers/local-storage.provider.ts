@@ -1,3 +1,5 @@
-import { defineProvider } from '@yorjs/core'
+import { defineInterface, defineProvider } from '@yorjs/core'
 
-export const localStorageProvider = defineProvider<Storage>(() => localStorage)
+export const IStorage = defineInterface<Storage>()
+
+export const localStorageProvider = defineProvider()(() => localStorage).implements(IStorage)

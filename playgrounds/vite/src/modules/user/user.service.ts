@@ -1,10 +1,8 @@
 import { defineProvider } from '@yorjs/core'
-import { LoggingInterceptor } from '../../common/logging.interceptor'
-import { AccessGuard } from '../../common/access.guard'
-import { UserRepository } from './interfaces/user-repository.interface'
-import { UserService } from './interfaces/user-service.interface'
+import { IUserRepository } from './interfaces/user-repository.interface'
+import { IUserService } from './interfaces/user-service.interface'
 
-const UserServiceImpl = defineProvider<UserService>((userRepository: UserRepository) => ({
+export const userService = defineProvider(IUserRepository)<typeof IUserService['getter']>(userRepository => ({
   signIn(data) {
     return userRepository.signIn(data)
   },
@@ -12,8 +10,5 @@ const UserServiceImpl = defineProvider<UserService>((userRepository: UserReposit
   fetchUser() {
     return userRepository.fetchUser()
   }
-}))
-  .useInterceptors(LoggingInterceptor)
-  .useGuards(AccessGuard)
+})).implements(IUserService)
 
-export { UserServiceImpl }

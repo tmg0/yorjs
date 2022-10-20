@@ -1,4 +1,4 @@
-import { defineInterface, defineProvider, useProvider } from '../index'
+import { defineInterface, defineProvider } from '../index'
 
 describe('define provider', () => {
   it('should have provider dependencies in metadata', () => {
@@ -27,6 +27,6 @@ describe('define provider', () => {
       }
     })).implements(IUserService)
 
-    expect(!!useProvider(userService).signIn).toBe(true)
+    expect(!!userService.dependencies).toBe(true)
   })
 })
