@@ -18,29 +18,33 @@ describe('use module', () => {
 
     const IUserService = defineInterface<{
       signIn(data: SignInDto): Promise<SignInResDto>
+      get(): string
     }>()
 
     const IProvider = defineInterface<{
       get(): string
     }>()
 
-    const userRep = defineProvider()(() => ({
+    const p = defineProvider().implements(IProvider).build(() => ({
+      get() {
+        return 'done'
+      }
+    }))
+
+    const userRep = defineProvider().implements(IUserRep).build(() => ({
       signIn(data: SignInDto) {
         return Promise.resolve({ token: 'TOKEN', ...data })
       }
-    })).implements(IUserRep)
+    }))
 
-    const p = defineProvider()(() => ({
+    const userService = defineProvider().implements(IUserService).inject(IUserRep, IProvider).build((rep, p) => ({
+      signIn(data) {
+        return rep.signIn(data)
+      },
       get() {
-        return ''
+        return p.get()
       }
-    })).implements(IProvider)
-
-    const userService = defineProvider(IUserRep, IProvider)((rep, p) => ({
-      signIn(data: SignInDto) {
-        return rep.signIn({ ...data, username: p.get() })
-      }
-    })).implements(IUserService)
+    }))
 
     const userController = defineController(IUserService)((userService) => {
       const usernameSignInForm = reactive({ username: '', password: '' })
@@ -49,9 +53,14 @@ describe('use module', () => {
         return userService.signIn(usernameSignInForm)
       }
 
+      const get = () => {
+        return userService.get()
+      }
+
       return {
         usernameSignInForm,
-        signIn
+        signIn,
+        get
       }
     })
 
@@ -62,8 +71,6 @@ describe('use module', () => {
 
     const user = useModule(UserModule)
 
-    const { username } = await user.signIn()
-
-    expect(username).toBe(user.usernameSignInForm.username)
+    expect(user.get()).toBe('done')
   })
 })

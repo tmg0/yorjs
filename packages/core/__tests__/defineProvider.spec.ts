@@ -21,11 +21,11 @@ describe('define provider', () => {
     //   }
     // })).implements(IUserApi)
 
-    const userService = defineProvider(IUserApi)<typeof IUserApi['getter']>(api => ({
+    const userService = defineProvider().implements(IUserService).inject(IUserApi).build(api => ({
       signIn(_data) {
         return api.signIn({ username: 'USERNAME', password: 'PASSWORD' })
       }
-    })).implements(IUserService)
+    }))
 
     expect(!!userService.dependencies).toBe(true)
   })
