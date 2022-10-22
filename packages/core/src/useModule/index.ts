@@ -2,9 +2,9 @@ import type { Module } from '../defineModule'
 import { useProvider } from '../useProvider'
 import type { Provider } from '../defineProvider'
 
-type ReactiveController<T extends object> = ReturnType<Module<T>['controller']['getter']>
+type ReactiveController<T> = ReturnType<Module<T>['controller']['getter']>
 
-export const useModule = <T extends object>(module: Module<T>): ReactiveController<T> => {
+export const useModule = <T >(module: Module<T>): ReactiveController<T> => {
   const { getter, metadata } = module.controller
 
   if (!metadata.dependencies.length)

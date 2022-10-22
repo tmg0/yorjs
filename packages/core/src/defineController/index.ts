@@ -1,20 +1,27 @@
 import { flatten } from '@yorjs/shared'
 import type { Provider } from '../defineProvider'
-import type { Interface } from '../defineInterface'
+import  { Interface } from '../defineInterface'
 
 type InterfacePartials<T> = { [P in keyof T]: T[P] extends Interface ? T[P]['getter'] : any }
+type ControllerImplements<T extends Controller<any>> = T['metadata']['interface']['getter']
 
-export interface ControllerMetadata {
+export interface ControllerMetadata<T> {
   dependencies: Provider<unknown>[]
-  interface?: Interface
+  interface: Interface<T, Controller<T>>
 }
 
-export class Controller<T extends object> {
+export class Controller<T> {
   public getter: (args?: any) => T
-  public metadata: ControllerMetadata = { dependencies: [] }
+  public metadata: ControllerMetadata<T> = { dependencies: [], interface: new Interface<T, Controller<T>>() }
 
-  constructor(getter: (args?: any) => T) {
+  constructor(getter: (args?: any) => T = () => ({} as T)) {
     this.getter = getter
+  }
+
+  implements<I extends Interface>(i: I): Controller<I['getter']> {
+    this.metadata.interface = i
+    this.metadata.interface.implements.push(this)
+    return this
   }
 
   dependencies(...dependencies: Array<unknown>) {
@@ -23,21 +30,39 @@ export class Controller<T extends object> {
   }
 }
 
-export const defineController = <I extends Interface[]>(...i: I) => {
-  return <T extends object>(getter: (...args: InterfacePartials<I>) => T): Controller<T> => {
-    const instance = new Controller(getter as ((...args: any[]) => T))
-    if (i && i.length > 0) {
-      const deps: Provider<any>[] = []
+export const defineController = () => {
+  class Factory<T, D extends Interface[]> {
+    public instance = new Controller<T>()
+    public deps = [] as unknown as D
 
-      for (const item of i) {
-        if (item.implements.length > 1 && !instance.dependencies.length)
-          throw new Error('have more than 1 implements')
-
-        const [impl] = item.implements
-        deps.push(impl)
-      }
-      instance.dependencies(...deps)
+    implements<I extends Interface<T>>(i: I): Factory<I['getter'], D> {
+      this.instance.implements(i)
+      return this
     }
-    return instance
+
+    inject<I extends Interface[]>(...i: I) {
+      if (i && i.length > 0) {
+        const deps: Provider<any>[] = []
+
+        for (const item of i) {
+          if (item.implements.length > 1 && !this.instance.dependencies.length)
+            throw new Error('should have only one implements without declare dependencies')
+
+          const [impl] = item.implements
+          deps.push(impl)
+        }
+        this.instance.dependencies(...deps)
+      }
+
+      return this as unknown as Factory<T, I>
+    }
+
+    build(getter: (...args: InterfacePartials<D>) => ControllerImplements<typeof this.instance>) {
+      this.instance.getter = getter as (...args: any[]) => T
+      return this.instance
+    }
   }
+
+  return new Factory()
 }
+

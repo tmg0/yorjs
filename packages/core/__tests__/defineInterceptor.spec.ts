@@ -1,4 +1,4 @@
-import { defineInterceptor, defineProvider, useProvider } from '../'
+import { defineInterceptor, defineInterface, defineProvider, useProvider } from '../'
 
 describe('define interactor', () => {
   it('should log in console before and after event', async () => {
@@ -12,8 +12,12 @@ describe('define interactor', () => {
       }
     })
 
-    const provider = defineProvider()(() => ({
-      do(): Promise<void> {
+    const IProvider = defineInterface<{
+      do: () => Promise<void>
+    }>()
+
+    const provider = defineProvider().implements(IProvider).build(() => ({
+      do() {
         arr.push('Doing')
 
         return new Promise((resolve) => {

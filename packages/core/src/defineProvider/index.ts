@@ -35,10 +35,10 @@ export class Provider<T> {
     return this
   }
 
-  implements<I extends Interface>(i: I) {
+  implements<I extends Interface>(i: I): Provider<I['getter']> {
     this.metadata.interface = i
     this.metadata.interface.implements.push(this)
-    return this as Provider<I['getter']>
+    return this
   }
 
   useInterceptors(...interceptors: Interceptor[]) {

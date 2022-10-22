@@ -1,9 +1,9 @@
 import type { Provider } from '../defineProvider'
 
-export class Interface<T = any> {
+export class Interface<T = any, I = Provider<any>> {
   public token = Symbol('INTERFACE')
   public getter!: T
-  public implements: Provider<any>[] = []
+  public implements: I[] = []
 }
 
 export const defineInterface = <T = any>(): Interface<T> => {
