@@ -53,11 +53,11 @@ export class Provider<T> {
 }
 
 export const defineProvider = () => {
-  class A<T, D extends Interface[]> {
+  class Factory<T, D extends Interface[]> {
     public instance = new Provider<T>()
     public deps = [] as unknown as D
 
-    implements<I extends Interface<T>>(i: I): A<I['getter'], D> {
+    implements<I extends Interface<T>>(i: I): Factory<I['getter'], D> {
       this.instance.implements(i)
       return this
     }
@@ -76,7 +76,7 @@ export const defineProvider = () => {
         this.instance.dependencies(...deps)
       }
 
-      return this as unknown as A<T, I>
+      return this as unknown as Factory<T, I>
     }
 
     build(getter: (...args: InterfacePartials<D>) => ProviderImplements<typeof this.instance>, options: ProviderOptions = { singleton: false }) {
@@ -86,5 +86,5 @@ export const defineProvider = () => {
     }
   }
 
-  return new A()
+  return new Factory()
 }
