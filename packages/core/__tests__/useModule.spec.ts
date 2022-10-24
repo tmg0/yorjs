@@ -8,19 +8,19 @@ const p1 = defineProvider().implements(IP1).build(() => ({
   do1() { return 'STR' }
 }), { singleton: true })
 
-const p2 = defineProvider().implements(IP2).inject(IP1).build((p1) => ({
+const p2 = defineProvider().implements(IP2).inject(IP1).build(p1 => ({
   do2: p1.do1
 }))
-
 
 describe('use module', () => {
   it('should have controller method in module', () => {
     const IC = defineInterface<{ do: (v: string) => string }>()
-    
+
     const c = defineController().implements(IC).inject(IP1, IP2).build((p1, p2) => {
       return {
         do(v) {
-          if (typeof v === 'string') return p1.do1()
+          if (typeof v === 'string')
+            return p1.do1()
           return p2.do2()
         }
       }
@@ -32,7 +32,7 @@ describe('use module', () => {
 
     expect(mDo('')).toBe('STR')
   })
-  
+
   it('should have only one instance in same provider', async () => {
     interface SignInDto {
       username: string

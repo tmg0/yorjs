@@ -1,6 +1,6 @@
 import { flatten } from '@yorjs/shared'
 import type { Provider } from '../defineProvider'
-import  { Interface } from '../defineInterface'
+import { Interface } from '../defineInterface'
 
 type InterfacePartials<T> = { [P in keyof T]: T[P] extends Interface ? T[P]['getter'] : any }
 type ControllerImplements<T extends Controller<any>> = T['metadata']['interface']['getter']
