@@ -1,4 +1,4 @@
-import { defineInterceptor, defineInterface, defineProvider, useProvider } from '../'
+import { defineInterceptor, defineInterface, defineProvider, useProvider } from '../index'
 
 describe('define interactor', () => {
   it('should log in console before and after event', async () => {

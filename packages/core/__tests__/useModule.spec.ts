@@ -1,18 +1,18 @@
 import { reactive } from 'vue'
 import { defineController, defineInterface, defineModule, defineProvider, useModule } from '../index'
 
-const IP1 = defineInterface<{ do1: () => string }>()
-const IP2 = defineInterface<{ do2: () => string }>()
-
-const p1 = defineProvider().implements(IP1).build(() => ({
-  do1() { return 'STR' }
-}), { singleton: true })
-
-const p2 = defineProvider().implements(IP2).inject(IP1).build(p1 => ({
-  do2: p1.do1
-}))
-
 describe('use module', () => {
+  const IP1 = defineInterface<{ do1: () => string }>()
+  const IP2 = defineInterface<{ do2: () => string }>()
+
+  const p1 = defineProvider().implements(IP1).build(() => ({
+    do1() { return 'STR' }
+  }), { singleton: true })
+
+  const p2 = defineProvider().implements(IP2).inject(IP1).build(p1 => ({
+    do2: p1.do1
+  }))
+
   it('should have controller method in module', () => {
     const IC = defineInterface<{ do: (v: string) => string }>()
 
@@ -49,18 +49,7 @@ describe('use module', () => {
 
     const IUserService = defineInterface<{
       signIn(data: SignInDto): Promise<SignInResDto>
-      get(): string
     }>()
-
-    const IProvider = defineInterface<{
-      get(): string
-    }>()
-
-    const p = defineProvider().implements(IProvider).build(() => ({
-      get() {
-        return 'done'
-      }
-    }))
 
     const userRep = defineProvider().implements(IUserRep).build(() => ({
       signIn(data: SignInDto) {
@@ -68,12 +57,9 @@ describe('use module', () => {
       }
     }))
 
-    const userService = defineProvider().implements(IUserService).inject(IUserRep, IProvider).build((rep, p) => ({
+    const userService = defineProvider().implements(IUserService).inject(IUserRep).build(rep => ({
       signIn(data) {
         return rep.signIn(data)
-      },
-      get() {
-        return p.get()
       }
     }))
 
@@ -83,8 +69,7 @@ describe('use module', () => {
         password: string
       }
 
-      signIn: () => void
-      get: () => string
+      signIn: () => Promise<SignInResDto>
     }>()
 
     const userController = defineController().implements(IUserController).inject(IUserService).build((userService) => {
@@ -94,24 +79,19 @@ describe('use module', () => {
         return userService.signIn(usernameSignInForm)
       }
 
-      const get = () => {
-        return userService.get()
-      }
-
       return {
         usernameSignInForm,
-        signIn,
-        get
+        signIn
       }
     })
 
     const userModule = defineModule({
       controller: userController,
-      providers: [userService, userRep, p]
+      providers: [userService, userRep]
     })
 
-    const { get } = useModule(userModule)
+    const { signIn } = useModule(userModule)
 
-    expect(get()).toBe('done')
+    expect((await signIn()).token).toBe('TOKEN')
   })
 })
