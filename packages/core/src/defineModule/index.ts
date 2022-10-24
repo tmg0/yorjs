@@ -1,5 +1,19 @@
-import { Controller } from '../defineController'
-import { Provider } from '../defineProvider'
+import type { Controller } from '../defineController'
+import type { Provider } from '../defineProvider'
+
+const injectImpls = (ctx: Provider<any> | Controller<any>) => {
+  const deps: Provider<any>[] = []
+  const { inject: i } = ctx.metadata
+
+  for (const item of i) {
+    if (item.implements.length > 1 && !ctx.dependencies.length)
+      throw new Error('should have only one implements without declare dependencies')
+
+    const [impl] = item.implements
+    deps.push(impl)
+  }
+  return deps
+}
 
 export interface ModuleOptions<T> {
   controller: Controller<T>
@@ -13,6 +27,12 @@ export class Module<T> {
   constructor(options: ModuleOptions<any>) {
     this.controller = options.controller
     this.providers = options.providers || []
+
+    this.controller.dependencies(...injectImpls(this.controller))
+
+    this.providers.forEach((provider) => {
+      provider.dependencies(...injectImpls(provider))
+    })
   }
 }
 

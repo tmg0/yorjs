@@ -1,8 +1,8 @@
 import { defineModule } from '@yorjs/core'
 import { requestProvider } from '../../common/request.provider'
-import { userRepository } from './user.repository'
-import { userService } from './user.service'
 import { userController } from './user.controller'
+import { userService } from './user.service'
+import { userRepository } from './user.repository'
 
 export const userModule = defineModule({
   controller: userController,

@@ -14,6 +14,7 @@ export interface ProviderOptions {
 export interface ProviderMetadata<T> {
   dependencies: any
   interface: Interface<T>
+  inject: Interface[]
 }
 
 export class Provider<T> {
@@ -22,7 +23,7 @@ export class Provider<T> {
   public getter: (...args: any[]) => T
   public interceptors?: Interceptor[]
   public guards?: Guard[]
-  public metadata: ProviderMetadata<T> = { dependencies: [], interface: new Interface<T>() }
+  public metadata: ProviderMetadata<T> = { dependencies: [], interface: new Interface<T>(), inject: [] }
   public singleton = false
 
   constructor(getter: (...args: any[]) => T = () => ({} as T), options: ProviderOptions = { singleton: false }) {
@@ -38,6 +39,11 @@ export class Provider<T> {
   implements<I extends Interface>(i: I): Provider<I['getter']> {
     this.metadata.interface = i
     this.metadata.interface.implements.push(this)
+    return this
+  }
+
+  inject<I extends Interface[]>(...i: I) {
+    this.metadata.inject = flatten(i)
     return this
   }
 
@@ -64,16 +70,17 @@ export const defineProvider = () => {
 
     inject<I extends Interface[]>(...i: I) {
       if (i && i.length > 0) {
-        const deps: Provider<any>[] = []
+        // const deps: Provider<any>[] = []
 
-        for (const item of i) {
-          if (item.implements.length > 1 && !this.instance.dependencies.length)
-            throw new Error('should have only one implements without declare dependencies')
+        // for (const item of i) {
+        //   if (item.implements.length > 1 && !this.instance.dependencies.length)
+        //     throw new Error('should have only one implements without declare dependencies')
 
-          const [impl] = item.implements
-          deps.push(impl)
-        }
-        this.instance.dependencies(...deps)
+        //   const [impl] = item.implements
+        //   deps.push(impl)
+        // }
+        // this.instance.dependencies(...deps)
+        this.instance.inject(...i)
       }
 
       return this as unknown as Factory<T, I>

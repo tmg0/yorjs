@@ -8,11 +8,12 @@ type ControllerImplements<T extends Controller<any>> = T['metadata']['interface'
 export interface ControllerMetadata<T> {
   dependencies: Provider<unknown>[]
   interface: Interface<T, Controller<T>>
+  inject: Interface[]
 }
 
 export class Controller<T> {
   public getter: (args?: any) => T
-  public metadata: ControllerMetadata<T> = { dependencies: [], interface: new Interface<T, Controller<T>>() }
+  public metadata: ControllerMetadata<T> = { dependencies: [], interface: new Interface<T, Controller<T>>(), inject: [] }
 
   constructor(getter: (args?: any) => T = () => ({} as T)) {
     this.getter = getter
@@ -26,6 +27,11 @@ export class Controller<T> {
 
   dependencies(...dependencies: Array<unknown>) {
     this.metadata.dependencies = flatten(dependencies) as Provider<unknown>[]
+    return this
+  }
+
+  inject<I extends Interface[]>(...i: I) {
+    this.metadata.inject = flatten(i)
     return this
   }
 }
@@ -42,18 +48,19 @@ export const defineController = () => {
 
     inject<I extends Interface[]>(...i: I) {
       if (i && i.length > 0) {
-        const deps: Provider<any>[] = []
+        // const deps: Provider<any>[] = []
 
-        for (const item of i) {
-          if (item.implements.length > 1 && !this.instance.dependencies.length)
-            throw new Error('should have only one implements without declare dependencies')
+        // for (const item of i) {
+        //   if (item.implements.length > 1 && !this.instance.dependencies.length)
+        //     throw new Error('should have only one implements without declare dependencies')
 
-          const [impl] = item.implements
-          deps.push(impl)
-        }
+        //   const [impl] = item.implements
+        //   deps.push(impl)
+        // }
 
-        if (deps && deps.length)
-          this.instance.dependencies(...deps)
+        // if (deps && deps.length)
+        //   this.instance.dependencies(...deps)
+        this.instance.inject(...i)
       }
 
       return this as unknown as Factory<T, I>
