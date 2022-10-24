@@ -31,14 +31,16 @@ Define a injectable module.
 #### Basic Usage
 
 ```
-import { defineProvider } from '@yorjs/core'
+import { defineInterface, defineProvider } from '@yorjs/core'
 
-interface Provider {
-  do: () => void
-}
+const IP = defineInterface<{
+  do: () => string
+}>()
 
-const providerImpl = defineProvider<Provider>(() => ({
-  do() { return 'done' }
+const provider = defineProvider().implements(IP).build(() => ({
+  do() {
+    return 'DONE'
+  }
 }))
 ```
 
@@ -49,21 +51,24 @@ Define a controller for view.
 #### Basic Usage
 
 ```
-import { defineController } from '@yorjs/core'
+import { defineInterface, defineController } from '@yorjs/core'
 
-interface Controller {
+const IC = defineInterface<{
   message: string
   doSth: () => void
-}
+}>()
 
-const controllerImpl = defineController<Controller>((provider: Provider) => {
-  const message = ''
+const controller = defineController().implements(IC).inject(IP).build((p) => {
+  const msg = ''
 
   const doSth = () => {
-    message = provider.do()
+    return p.do()
   }
 
-  return { message, doSth }
+  return {
+    msg,
+    doSth
+  }
 })
 ```
 
@@ -77,8 +82,8 @@ Define a module for controller dependencies relationship.
 import { defineModule } from '@yorjs/core'
 
 const module = defineModule({
-  controller: controllerImpl.dependencies(providerImpl),
-  providers: [providerImpl]
+  controller: controller,
+  providers: [provider]
 })
 ```
 
