@@ -1,21 +1,18 @@
 <script lang="ts" setup>
 import { useModule } from '@yorjs/core'
-import { UserModule } from './modules/user/user.module'
+import { userModule } from './modules/user/user.module'
 
-const { user, usernameSignInForm, token, signIn, fetchUser } = useModule(UserModule)
+const { signInForm, signIn } = useModule(userModule)
 </script>
 
 <template>
   <div>
-    <input v-model="usernameSignInForm.username" />
-    <input v-model="usernameSignInForm.password" />
-    <br />
+    <input v-model="signInForm.username">
+    <input v-model="signInForm.password">
+    <br>
 
-    <button @click="signIn()">sign in</button>
-    <button @click="fetchUser()">fetch user info</button>
-
-    <div>token: {{ token }}</div>
-    <div>sign in form: {{ usernameSignInForm }}</div>
-    <div>user info: {{ user }}</div>
+    <button @click="signIn()">
+      sign in
+    </button>
   </div>
 </template>

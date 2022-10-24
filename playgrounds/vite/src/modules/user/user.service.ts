@@ -1,14 +1,9 @@
 import { defineProvider } from '@yorjs/core'
-import { IUserRepository } from './interfaces/user-repository.interface'
-import { IUserService } from './interfaces/user-service.interface'
+import { IUserRepository, IUserService } from './user.interface'
 
-export const userService = defineProvider(IUserRepository)<typeof IUserService['getter']>(userRepository => ({
-  signIn(data) {
-    return userRepository.signIn(data)
-  },
-
-  fetchUser() {
-    return userRepository.fetchUser()
+export const userService = defineProvider().implements(IUserService).inject(IUserRepository).build(repo => ({
+  async signIn(username, password) {
+    const { data } = await repo.signIn({ username, password })
+    return data
   }
-})).implements(IUserService)
-
+}))

@@ -1,32 +1,16 @@
-import { reactive, ref, watch } from 'vue'
 import { defineController } from '@yorjs/core'
-import { UserService } from './interfaces/user-service.interface'
+import { reactive } from 'vue'
+import { IUserController, IUserService } from './user.interface'
 
-export const UserController = defineController((userService: UserService) => {
-  const token = ref('')
-  const usernameSignInForm = reactive({ username: '', password: '' })
-  const user = reactive({ username: '' })
+export const userController = defineController().implements(IUserController).inject(IUserService).build((service) => {
+  const signInForm = reactive({ username: '', password: '' })
 
-  watch(token, (val: string) => {
-    console.log(val)
-  })
-
-  const signIn = async () => {
-    const { token: t } = await userService.signIn(usernameSignInForm)
-    token.value = t
-  }
-
-  const fetchUser = async () => {
-    if (!token.value) return
-    const { username } = await userService.fetchUser()
-    user.username = username
+  const signIn = () => {
+    service.signIn(signInForm.username, signInForm.password)
   }
 
   return {
-    user,
-    token,
-    usernameSignInForm,
-    signIn,
-    fetchUser
+    signInForm,
+    signIn
   }
 })

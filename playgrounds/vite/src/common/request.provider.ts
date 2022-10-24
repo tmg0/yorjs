@@ -1,7 +1,10 @@
 import axios from 'axios'
-import { defineProvider } from '@yorjs/core'
+import { defineInterface, defineProvider } from '@yorjs/core'
+import type { AxiosInstance } from 'axios'
 
-export const RequestProviderImpl = defineProvider()(() => {
+export const IRequestProvider = defineInterface<AxiosInstance>()
+
+export const requestProvider = defineProvider().implements(IRequestProvider).build(() => {
   const axiosInstance = axios.create({ baseURL: '/' })
 
   return axiosInstance

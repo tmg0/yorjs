@@ -1,13 +1,10 @@
 import { defineModule } from '@yorjs/core'
-import { WebStorageProviderImpl } from '../../common/web-storage.provider'
-import { RequestProviderImpl } from '../../common/request.provider'
-import { UserController } from './user.controller'
-import { UserRepositoryImpl } from './user.repository'
-import { UserServiceImpl } from './user.service'
+import { requestProvider } from '../../common/request.provider'
+import { userRepository } from './user.repository'
+import { userService } from './user.service'
+import { userController } from './user.controller'
 
-const UserModule = defineModule({
-  controller: UserController.dependencies(UserServiceImpl),
-  providers: [UserServiceImpl.dependencies(UserRepositoryImpl), UserRepositoryImpl.dependencies(RequestProviderImpl, WebStorageProviderImpl), RequestProviderImpl, WebStorageProviderImpl]
+export const userModule = defineModule({
+  controller: userController,
+  providers: [userService, userRepository, requestProvider]
 })
-
-export { UserModule }

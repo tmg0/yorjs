@@ -51,7 +51,9 @@ export const defineController = () => {
           const [impl] = item.implements
           deps.push(impl)
         }
-        this.instance.dependencies(...deps)
+
+        if (deps && deps.length)
+          this.instance.dependencies(...deps)
       }
 
       return this as unknown as Factory<T, I>

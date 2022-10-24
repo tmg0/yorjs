@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@yorjs/core": ["../../packages/core"]
+      "@yorjs/core": ["../../packages/core/index"]
     }
   }
 }
