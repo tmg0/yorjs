@@ -47,21 +47,8 @@ export const defineController = () => {
     }
 
     inject<I extends Interface[]>(...i: I) {
-      if (i && i.length > 0) {
-        // const deps: Provider<any>[] = []
-
-        // for (const item of i) {
-        //   if (item.implements.length > 1 && !this.instance.dependencies.length)
-        //     throw new Error('should have only one implements without declare dependencies')
-
-        //   const [impl] = item.implements
-        //   deps.push(impl)
-        // }
-
-        // if (deps && deps.length)
-        //   this.instance.dependencies(...deps)
+      if (i && i.length > 0)
         this.instance.inject(...i)
-      }
 
       return this as unknown as Factory<T, I>
     }
