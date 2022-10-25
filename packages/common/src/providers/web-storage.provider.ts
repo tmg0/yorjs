@@ -4,7 +4,7 @@ import { IStorage } from './local-storage.provider'
 
 export const IWebStorage = defineInterface<WebStorage>()
 
-export const webStorageProvider = defineProvider(IStorage)((storage: Storage) => ({
+export const webStorageProvider = defineProvider().implements(IWebStorage).inject(IStorage).build(storage => ({
   get(key: string, def = '') {
     const item = storage.getItem(key)
 
@@ -28,7 +28,7 @@ export const webStorageProvider = defineProvider(IStorage)((storage: Storage) =>
     return def
   },
 
-  set(key: string, value: any, expire: number) {
+  set(key, value, expire) {
     const stringifyValue = JSON.stringify({
       value,
       expire: expire ? new Date().getTime() + expire : null
@@ -57,4 +57,4 @@ export const webStorageProvider = defineProvider(IStorage)((storage: Storage) =>
       storage.removeItem(removedKeys[key])
   }
 })
-).implements(IWebStorage)
+)

@@ -1,3 +1,5 @@
-import { defineProvider } from '@yorjs/core'
+import { defineInterface, defineProvider } from '@yorjs/core'
 
-export const sessionStorageProvider = defineProvider()(() => sessionStorage)
+export const IStorage = defineInterface<Storage>()
+
+export const sessionStorageProvider = defineProvider().implements(IStorage).build(() => sessionStorage)
