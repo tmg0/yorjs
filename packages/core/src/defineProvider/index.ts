@@ -14,7 +14,7 @@ export interface ProviderOptions {
 export interface ProviderMetadata<T> {
   dependencies: any
   interface: Interface<T>
-  inject: Interface[]
+  injectors: Interface[]
 }
 
 export class Provider<T> {
@@ -23,7 +23,7 @@ export class Provider<T> {
   public getter: (...args: any[]) => T
   public interceptors?: Interceptor[]
   public guards?: Guard[]
-  public metadata: ProviderMetadata<T> = { dependencies: [], interface: new Interface<T>(), inject: [] }
+  public metadata: ProviderMetadata<T> = { dependencies: [], interface: new Interface<T>(), injectors: [] }
   public singleton = false
 
   constructor(getter: (...args: any[]) => T = () => ({} as T), options: ProviderOptions = { singleton: false }) {
@@ -43,7 +43,7 @@ export class Provider<T> {
   }
 
   inject<I extends Interface[]>(...i: I) {
-    this.metadata.inject = flatten(i)
+    this.metadata.injectors = flatten(i)
     return this
   }
 

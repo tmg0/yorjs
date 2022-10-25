@@ -8,12 +8,12 @@ type ControllerImplements<T extends Controller<any>> = T['metadata']['interface'
 export interface ControllerMetadata<T> {
   dependencies: Provider<unknown>[]
   interface: Interface<T, Controller<T>>
-  inject: Interface[]
+  injectors: Interface[]
 }
 
 export class Controller<T> {
   public getter: (args?: any) => T
-  public metadata: ControllerMetadata<T> = { dependencies: [], interface: new Interface<T, Controller<T>>(), inject: [] }
+  public metadata: ControllerMetadata<T> = { dependencies: [], interface: new Interface<T, Controller<T>>(), injectors: [] }
 
   constructor(getter: (args?: any) => T = () => ({} as T)) {
     this.getter = getter
@@ -31,7 +31,7 @@ export class Controller<T> {
   }
 
   inject<I extends Interface[]>(...i: I) {
-    this.metadata.inject = flatten(i)
+    this.metadata.injectors = flatten(i)
     return this
   }
 }
