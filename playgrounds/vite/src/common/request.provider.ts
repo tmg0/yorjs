@@ -4,7 +4,7 @@ import type { AxiosInstance } from 'axios'
 
 export const IRequestProvider = defineInterface<AxiosInstance>()
 
-export const requestProvider = defineProvider().implements(IRequestProvider).build(() => {
+export const requestProvider = defineProvider().implements(IRequestProvider).setup(() => {
   const axiosInstance = axios.create({ baseURL: '/' })
 
   return axiosInstance

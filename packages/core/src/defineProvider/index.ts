@@ -75,7 +75,7 @@ export const defineProvider = () => {
       return this as unknown as Factory<T, I>
     }
 
-    build(getter: (...args: InterfacePartials<D>) => ProviderImplements<typeof this.instance>, options: ProviderOptions = { singleton: false }) {
+    setup(getter: (...args: InterfacePartials<D>) => ProviderImplements<typeof this.instance>, options: ProviderOptions = { singleton: false }) {
       this.instance.getter = getter as (...args: any[]) => T
       this.instance.singleton = !!options.singleton
       return this.instance

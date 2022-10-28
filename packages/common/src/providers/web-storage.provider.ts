@@ -4,7 +4,7 @@ import { IStorage } from './local-storage.provider'
 
 export const IWebStorage = defineInterface<WebStorage>()
 
-export const webStorageProvider = defineProvider().implements(IWebStorage).inject(IStorage).build(storage => ({
+export const webStorageProvider = defineProvider().implements(IWebStorage).inject(IStorage).setup(storage => ({
   get(key: string, def = '') {
     const item = storage.getItem(key)
 

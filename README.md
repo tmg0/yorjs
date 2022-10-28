@@ -37,7 +37,7 @@ const IP = defineInterface<{
   do: () => string
 }>()
 
-const provider = defineProvider().implements(IP).build(() => ({
+const provider = defineProvider().implements(IP).setup(() => ({
   do() {
     return 'DONE'
   }
@@ -58,7 +58,7 @@ const IC = defineInterface<{
   doSth: () => void
 }>()
 
-const controller = defineController().implements(IC).inject(IP).build((p) => {
+const controller = defineController().implements(IC).inject(IP).setup((p) => {
   const msg = ''
 
   const doSth = () => {

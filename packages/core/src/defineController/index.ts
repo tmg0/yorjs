@@ -53,7 +53,7 @@ export const defineController = () => {
       return this as unknown as Factory<T, I>
     }
 
-    build(getter: (...args: InterfacePartials<D>) => ControllerImplements<typeof this.instance>) {
+    setup(getter: (...args: InterfacePartials<D>) => ControllerImplements<typeof this.instance>) {
       this.instance.getter = getter as (...args: any[]) => T
       return this.instance
     }

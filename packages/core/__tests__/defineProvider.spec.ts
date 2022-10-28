@@ -21,7 +21,7 @@ describe('define provider', () => {
     //   }
     // })).implements(IUserApi)
 
-    const userService = defineProvider().implements(IUserService).inject(IUserApi).build(api => ({
+    const userService = defineProvider().implements(IUserService).inject(IUserApi).setup(api => ({
       signIn(_data) {
         return api.signIn({ username: 'USERNAME', password: 'PASSWORD' })
       }

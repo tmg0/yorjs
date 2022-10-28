@@ -38,7 +38,7 @@ importers:
 
   packages/common:
     specifiers:
-      '@yorjs/core': workspace:^1.0.3
+      '@yorjs/core': workspace:2.0.0-rc.1
     dependencies:
       '@yorjs/core': link:../core
 

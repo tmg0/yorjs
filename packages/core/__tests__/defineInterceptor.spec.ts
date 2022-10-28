@@ -16,7 +16,7 @@ describe('define interactor', () => {
       do: () => Promise<void>
     }>()
 
-    const provider = defineProvider().implements(IProvider).build(() => ({
+    const provider = defineProvider().implements(IProvider).setup(() => ({
       do() {
         arr.push('Doing')
 
