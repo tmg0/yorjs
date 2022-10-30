@@ -34,6 +34,7 @@ describe('use module', () => {
   })
 
   it('should inject impls when use provider', () => {
-    expect(1).toBe(1)
+    const { do2 } = useProvider(p2)
+    expect(do2()).toBe('STR')
   })
 })
