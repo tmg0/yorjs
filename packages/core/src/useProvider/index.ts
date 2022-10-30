@@ -2,6 +2,20 @@ import { isFunction, isPromise } from '@yorjs/shared'
 import type { Interceptor } from '../defineInterceptor'
 import type { Provider } from '../defineProvider'
 
+const injectImpls = (ctx: Provider<any>) => {
+  const deps: Provider<any>[] = []
+  const { injectors: i } = ctx.metadata
+
+  for (const item of i) {
+    if (item.implements.length > 1 && !ctx.dependencies.length)
+      throw new Error('should declare dependencies if you have more than one implements')
+
+    const [impl] = item.implements
+    deps.push(impl)
+  }
+  return deps
+}
+
 export interface InjectHooks<T> {
   created(token: symbol, context: T): void
 }
@@ -70,6 +84,8 @@ export const useProvider = <T>(options: Provider<T>, hooks?: InjectHooks<T>): T 
   }
 
   const { getter, metadata } = options
+
+  options.dependencies(...injectImpls(options))
 
   if (!metadata.dependencies.length) {
     const instance = getter()

@@ -1,11 +1,28 @@
 import type { Module } from '../defineModule'
 import { useProvider } from '../useProvider'
 import type { Provider } from '../defineProvider'
+import { Controller } from '../defineController'
 
 type ReactiveController<T> = ReturnType<Module<T>['controller']['getter']>
 
+const injectImpls = (ctx: Controller<any>) => {
+  const deps: Provider<any>[] = []
+  const { injectors: i } = ctx.metadata
+
+  for (const item of i) {
+    if (item.implements.length > 1 && !ctx.dependencies.length)
+      throw new Error('should declare dependencies if you have more than one implements')
+
+    const [impl] = item.implements
+    deps.push(impl)
+  }
+  return deps
+}
+
 export const useModule = <T >(module: Module<T>): ReactiveController<T> => {
   const { getter, metadata } = module.controller
+
+  module.controller.dependencies(...injectImpls(module.controller))
 
   if (!metadata.dependencies.length)
     return getter()
