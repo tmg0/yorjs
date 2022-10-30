@@ -24,9 +24,9 @@ export class Provider<T> {
   public interceptors?: Interceptor[]
   public guards?: Guard[]
   public metadata: ProviderMetadata<T> = { dependencies: [], interface: new Interface<T>(), injectors: [] }
-  public singleton = false
+  public singleton = true
 
-  constructor(getter: (...args: any[]) => T = () => ({} as T), options: ProviderOptions = { singleton: false }) {
+  constructor(getter: (...args: any[]) => T = () => ({} as T), options: ProviderOptions = { singleton: true }) {
     this.getter = getter
     this.singleton = !!options?.singleton
   }
@@ -75,7 +75,7 @@ export const defineProvider = () => {
       return this as unknown as Factory<T, I>
     }
 
-    setup(getter: (...args: InterfacePartials<D>) => ProviderImplements<typeof this.instance>, options: ProviderOptions = { singleton: false }) {
+    setup(getter: (...args: InterfacePartials<D>) => ProviderImplements<typeof this.instance>, options: ProviderOptions = { singleton: true }) {
       this.instance.getter = getter as (...args: any[]) => T
       this.instance.singleton = !!options.singleton
       return this.instance

@@ -1,4 +1,3 @@
-import { reactive } from 'vue'
 import { defineController, defineInterface, defineModule, defineProvider, useModule, useProvider } from '../index'
 
 describe('use module', () => {
