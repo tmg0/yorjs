@@ -24,7 +24,8 @@ describe('use module', () => {
     }
   })
 
-  const m = defineModule({ controller: c, providers: [p1, p2], exports: [p2] })
+  const m2 = defineModule({ controller: c, providers: [p1, p2], exports: [p1, p2] })
+  const m = defineModule({ controller: c, imports: [m2] })
 
   it('should have controller method in module', () => {
     const { do: mDo } = useModule(m)

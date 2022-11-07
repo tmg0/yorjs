@@ -39,15 +39,24 @@ export interface ModuleOptions<T> {
 
 export class Module<T> {
   public controller: Controller<T>
-  public providers: Provider<unknown>[]
-  public exports: Provider<unknown>[]
-  public imports: Module<unknown>[]
+  public providers: Provider<unknown>[] = []
+  public exports: Provider<unknown>[] = []
+  public imports: Module<unknown>[] = []
 
   constructor(options: ModuleOptions<any>) {
     this.controller = options.controller
     this.providers = options.providers || []
     this.imports = options.imports || []
     this.exports = options.exports || this.providers || []
+
+    const set = new Set(this.providers.map(({ token }) => token))
+
+    this.imports.forEach(({ exports }) => {
+      exports.forEach((provider) => {
+        if (!set.has(provider.token))
+          this.providers.push(provider)
+      })
+    })
 
     this.controller.dependencies(...injectImpls(this.controller), this.providers)
 
