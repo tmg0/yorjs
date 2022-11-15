@@ -2,6 +2,7 @@ import { flatten } from '@yorjs/shared'
 import type { Interceptor } from '../defineInterceptor'
 import type { Guard } from '../defineGuard'
 import { Interface } from '../defineInterface'
+import { useProvider } from '../useProvider'
 
 type DependencyPartials<T> = { [P in keyof T]: Provider<T[P]> }
 type InterfacePartials<T> = { [P in keyof T]: T[P] extends Interface ? T[P]['getter'] : any }
@@ -45,6 +46,10 @@ export class Provider<T> {
   inject<I extends Interface[]>(...i: I) {
     this.metadata.injectors = flatten(i)
     return this
+  }
+
+  use() {
+    return useProvider(this)
   }
 
   useInterceptors(...interceptors: Interceptor[]) {
