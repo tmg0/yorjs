@@ -1,4 +1,3 @@
-import { useModule } from '../useModule'
 import { useProvider } from '../useProvider'
 import type { Controller } from '../defineController'
 import type { Provider } from '../defineProvider'
@@ -64,10 +63,6 @@ export class Module<T> {
     this.providers.forEach((provider) => {
       provider.dependencies(...injectImpls(provider, this.providers))
     })
-  }
-
-  use(): T {
-    return useModule(this)
   }
 
   useExport<T>(provider: Provider<T>): T {

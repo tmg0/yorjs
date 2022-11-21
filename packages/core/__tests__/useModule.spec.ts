@@ -1,4 +1,4 @@
-import { defineController, defineInterface, defineModule, defineProvider } from '../index'
+import { defineController, defineInterface, defineModule, defineProvider, useModule } from '../index'
 
 describe('use module', () => {
   const IP1 = defineInterface<{ do1: () => string }>()
@@ -28,7 +28,7 @@ describe('use module', () => {
   const m = defineModule({ controller: c, imports: [m2] })
 
   it('should have controller method in module', () => {
-    const { do: mDo } = m.use()
+    const { do: mDo } = useModule(m)
     expect(mDo('')).toBe('STR')
   })
 
