@@ -39,7 +39,6 @@ export class Controller<T> {
 export const defineController = () => {
   class Factory<T, D extends Interface[]> {
     public instance = new Controller<T>()
-    public deps = [] as unknown as D
 
     implements<I extends Interface<T>>(i: I): Factory<I['getter'], D> {
       this.instance.implements(i)
