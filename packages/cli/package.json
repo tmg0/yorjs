@@ -1,0 +1,15 @@
+{
+  "name": "@yor/cli",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "unpkg": "./dist/index.iife.min.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "yor": "./dist/index.cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

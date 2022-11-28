@@ -21,5 +21,6 @@ interface PackageManifest {
 
 export const packages: PackageManifest[] = [
   { name: 'core', display: 'yorjs', build: true, external: ['@yorjs/shared'], globals: { '@yorjs/shared': 'YorShared' } },
+  { name: 'cli', display: 'yorjs', build: true },
   { name: 'shared', display: 'yorjs', build: true }
 ]
