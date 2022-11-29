@@ -24,5 +24,50 @@ import module
 import { } from '@yorjs/core'
 ```
 
+## Usage
+
+### `Core`
+
+A basic usage of yor. Include define provider / controller / interface / module
+
+```
+import { defineProvider, defineController, defineInterface,  useModule } from '@yorjs/core'
+
+const IProvider = defineInterface<{
+  do: () => string
+}>()
+
+const IController = defineController<{
+  result: string
+  do: () => void
+}>()
+
+const provider = defineProvider().implements(IProvider).setup(() => ({
+  do() { return 'done' }
+}))
+
+const controller = defineController().implements(IController).inject(IProvider).setup((p) => {
+  let result = ''
+
+  return {
+    result,
+    do() {
+      result = p.do()
+    }
+  }
+})
+```
+
+Use module in `vue` component
+
+```
+import { useModule } from '@yorjs/core'
+import { userModule } from '../user.module'
+
+<script setup lang="ts">
+const userModule = useModule(userModule)
+</script>
+```
+
 ## License
 [MIT](./LICENSE)
