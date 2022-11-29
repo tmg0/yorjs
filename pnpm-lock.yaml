@@ -36,6 +36,12 @@ importers:
       typescript: 4.8.2
       vue: 3.2.38
 
+  packages/cli:
+    specifiers:
+      '@yorjs/core': 2.0.0-rc.7
+    dependencies:
+      '@yorjs/core': 2.0.0-rc.7
+
   packages/common:
     specifiers:
       '@yorjs/core': workspace:2.0.0-rc.1
@@ -1299,6 +1305,16 @@ packages:
   /@vue/shared/3.2.38:
     resolution: {integrity: sha512-dTyhTIRmGXBjxJE+skC8tTWCGLCVc4wQgRRLt8+O9p5ewBAjoBwtCAkLPrtToSr1xltoe3st21Pv953aOZ7alg==}
     dev: true
+
+  /@yorjs/core/2.0.0-rc.7:
+    resolution: {integrity: sha512-0H05fRGokdTOS3EthpgfzMx77UrW2J1JOnFaAsQSE511QtyNKFRI8qRUAFdf3uvaAuZgHCiIrTesO9RY6q5g3w==}
+    dependencies:
+      '@yorjs/shared': 1.0.0
+    dev: false
+
+  /@yorjs/shared/1.0.0:
+    resolution: {integrity: sha512-KDilQLVac7u3lhu8Or/JBwZLHTunJUbYlo10rvSg4Kp+Gy2zfLzI8IIfbkVjxj2vAeuF/eu2k7VTFTgoILACHQ==}
+    dev: false
 
   /acorn-jsx/5.3.2_acorn@8.8.0:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}

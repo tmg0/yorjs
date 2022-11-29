@@ -1,15 +1,15 @@
 {
-  "name": "@yor/cli",
+  "name": "@yorjs/cli",
   "version": "0.0.1",
   "description": "",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "unpkg": "./dist/index.iife.min.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
   "bin": {
-    "yor": "./dist/index.cjs"
+    "yor": "./index.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@yorjs/core": "2.0.0-rc.7"
+  }
 }
