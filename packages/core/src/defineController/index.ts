@@ -3,7 +3,6 @@ import type { Provider } from '../defineProvider'
 import { Interface } from '../defineInterface'
 
 type InterfacePartials<T> = { [P in keyof T]: T[P] extends Interface ? T[P]['getter'] : any }
-type ControllerImplements<T extends Controller<any>> = T['metadata']['interface']['getter']
 
 export interface ControllerMetadata<T> {
   dependencies: Provider<unknown>[]
@@ -52,7 +51,7 @@ export const defineController = () => {
       return this as unknown as Factory<T, I>
     }
 
-    setup(getter: (...args: InterfacePartials<D>) => ControllerImplements<typeof this.instance>) {
+    setup(getter: (...args: InterfacePartials<D>) => T) {
       this.instance.getter = getter as (...args: any[]) => T
       return this.instance
     }

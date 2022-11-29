@@ -5,7 +5,6 @@ import { Interface } from '../defineInterface'
 
 type DependencyPartials<T> = { [P in keyof T]: Provider<T[P]> }
 type InterfacePartials<T> = { [P in keyof T]: T[P] extends Interface ? T[P]['getter'] : any }
-type ProviderImplements<T extends Provider<any>> = T['metadata']['interface']['getter']
 
 export interface ProviderOptions {
   singleton?: boolean
@@ -74,7 +73,7 @@ export const defineProvider = () => {
       return this as unknown as Factory<T, I>
     }
 
-    setup(getter: (...args: InterfacePartials<D>) => ProviderImplements<typeof this.instance>, options: ProviderOptions = { singleton: true }) {
+    setup(getter: (...args: InterfacePartials<D>) => T, options: ProviderOptions = { singleton: true }) {
       this.instance.getter = getter as (...args: any[]) => T
       this.instance.singleton = !!options.singleton
       return this.instance
