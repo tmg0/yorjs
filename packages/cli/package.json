@@ -3,13 +3,17 @@
   "version": "0.0.1",
   "description": "",
   "main": "./dist/index.js",
+  "scripts": {
+    "test": "node ./index.js"
+  },
   "bin": {
     "yor": "./index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@yorjs/core": "workspace:^2.0.0"
+  "devDependencies": {
+    "commander": "^9.4.1",
+    "fs-extra": "^11.0.0"
   }
 }
