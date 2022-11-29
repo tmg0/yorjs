@@ -149,5 +149,59 @@ import { providerImpl } from '../'
 providerImpl.useGuards(loggingInterceptor, otherInterceptor)
 ```
 
+## Vue
+
+### `Options Api`
+
+Return module in data.
+
+```
+<script lang="ts">
+import { useModule } from '@yorjs/core'
+import { userModule } from '../user.module'
+
+export default {
+  data() {
+    return {
+      userModule: useModule(userModule)
+    }
+  }
+}
+<script>
+```
+
+### `Composition Api`
+
+With setup script
+
+```
+<script setup lang="ts">
+import { useModule } from '@yorjs/core'
+import { userModule } from '../user.module'
+
+const userModule = useModule(userModule)
+</script>
+```
+
+With defineComponents
+
+```
+<script lang="ts">
+import { defineComponents } from 'vue'
+import { useModule } from '@yorjs/core'
+import { userModule } from '../user.module'
+
+export default defineComponents({
+  setup() {
+    const userModule = useModule(userModule)
+
+    return {
+      userModule
+    }
+  }
+})
+</script>
+```
+
 ## License
 [MIT](./LICENSE)
