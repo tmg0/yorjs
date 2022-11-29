@@ -2,7 +2,9 @@
 
 [![NPM version](https://img.shields.io/npm/v/@yorjs/core)](https://www.npmjs.com/package/@yorjs/core)
 
-A DI framework for frontend.
+A DI lib for javascript / typescript. Use it like a functional `nestjs` and has full support with types.
+
+Can be used with esbuild. Without dependency of reflect metadata.
 
 ## Installation
 
