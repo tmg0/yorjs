@@ -17,7 +17,7 @@ program.command('create')
       return
     }
 
-    Object.keys(options).forEach((el: Yor) => templates[el](str))
+    Object.keys(options).forEach(el => (templates as any)[el](str))
   })
 
 program.parse()
