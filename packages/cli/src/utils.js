@@ -40,6 +40,19 @@ export const ${str}${firstLetterUpperCase(suffix)} = defineProvider().implements
 `
 }
 
+const moduleTemplate = (str) => {
+  return `import { defineModule } from '@yorjs/core'
+import { ${str}Controller } from './${str}.controller'
+import { ${str}Service } from './${str}.service'
+import { ${str}Repo } from './${str}.repo'
+
+export const ${str}Module = defineModule({
+  controller: ${str}Controller,
+  providers: [${str}Service, ${str}Repo]
+})
+`
+}
+
 const genInterface = async (str, path = '.', suffix = 'provider') => {
   const YOR_INTERFACE_FILE_NAME = `${path}/${str}.interface.ts`
   await fs.ensureFile(YOR_INTERFACE_FILE_NAME)
@@ -86,6 +99,7 @@ const genModule = async (str) => {
   genController(str, YOR_MODULR_PATH, ['service'])
 
   await fs.ensureFile(YOR_MODULE_FILE_NAME)
+  fs.writeFile(YOR_MODULE_FILE_NAME, moduleTemplate(str))
 }
 
 const templates = {
