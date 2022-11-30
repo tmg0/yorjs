@@ -2,9 +2,9 @@
   "name": "@yorjs/cli",
   "version": "0.0.2",
   "description": "",
-  "main": "./index.js",
+  "main": "./dist/index.cjs",
   "bin": {
-    "yor": "./index.js"
+    "yor": "./dist/index.cjs"
   },
   "keywords": [],
   "author": "",
