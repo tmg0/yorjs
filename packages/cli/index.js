@@ -4,7 +4,7 @@ const { Yor, YorAlias } = require('./src/enums')
 const { controllerTemplate } = require('./src/utils')
 const { version } = require('./package.json')
 
-const genInterface = async (str, { path = '.' } = { path: '.' }) => {
+const genInterface = async (str, path = '.') => {
   const YOR_INTERFACE_FILE_NAME = `${path}/${str}.interface.ts`
   await fs.ensureFile(YOR_INTERFACE_FILE_NAME)
 }
@@ -28,7 +28,7 @@ const genModule = async (str) => {
   if (!fs.existsSync(YOR_MODULR_PATH))
     fs.mkdir(YOR_MODULR_PATH)
 
-  genInterface(str, { path: YOR_MODULR_PATH })
+  genInterface(str, YOR_MODULR_PATH)
   genProvider(str, { path: YOR_MODULR_PATH, suffix: 'service' })
   genProvider(str, { path: YOR_MODULR_PATH, suffix: 'repo' })
   genController(str, YOR_MODULR_PATH, ['service'])
