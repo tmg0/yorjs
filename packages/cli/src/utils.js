@@ -28,8 +28,16 @@ const interfaceTemplate = (str, suffix = 'provider') => {
   return `export const ${I(str, suffix)} = defineInterface<{/** */}>()\n`
 }
 
-const providerTemplate = (str, dependencies = []) => {
-  return ``
+const providerTemplate = (str, dependencies = [], suffix = 'provider') => {
+  return `import { defineProvider } from '@yorjs/core'
+${interfaceImportStringify(`./${str}.interface`, str, [suffix, ...dependencies])}
+
+export const ${str}${firstLetterUpperCase(suffix)} = defineProvider().implements(${I(str, suffix)}).inject(${dependencies.map(el => I(str, el)).join(', ')}).setup((${dependencies.join(', ')}) => {
+  return {
+    /** */
+  }
+})
+`
 }
 
 const genInterface = async (str, path = '.', suffix = 'provider') => {
@@ -51,7 +59,7 @@ const genProvider = async (str, path = '.', dependencies = [], suffix = 'provide
   const YOR_PROVIDER_FILE_NAME = `${path}/${str}.${suffix}.ts`
   await fs.ensureFile(YOR_PROVIDER_FILE_NAME)
 
-  fs.writeFile(YOR_PROVIDER_FILE_NAME, providerTemplate(str, dependencies))
+  fs.writeFile(YOR_PROVIDER_FILE_NAME, providerTemplate(str, dependencies, suffix))
 }
 
 const genController = async (str, path = '.', dependencies = []) => {
