@@ -1,18 +1,18 @@
-const fs = require('fs-extra')
-const { findStaticImports } = require('mlly')
-const MagicString = require('magic-string')
-const { Yor } = require('./enums')
+import fs from 'fs-extra'
+import { findStaticImports } from 'mlly'
+import MagicString from 'magic-string'
+import { Yor } from './enums'
 
-const firstLetterUpperCase = str => str.replace(str[0], str[0].toUpperCase())
+const firstLetterUpperCase = (str: string) => str.replace(str[0], str[0].toUpperCase())
 
-const I = (str, suffix = 'provider') => `I${firstLetterUpperCase(str)}${firstLetterUpperCase(suffix)}`
+const I = (str: string, suffix = 'provider') => `I${firstLetterUpperCase(str)}${firstLetterUpperCase(suffix)}`
 
-const interfaceImportStringify = (lib, str, suffix = []) => {
+const interfaceImportStringify = (lib: string, str: string, suffix: string[] = []) => {
   const moduleArr = suffix.map(el => I(str, el))
   return `import { ${moduleArr.join(', ')} } from '${lib}'`
 }
 
-const controllerTemplate = (str, dependencies = []) => {
+export const controllerTemplate = (str: string, dependencies: string[] = []) => {
   return `import { defineController } from '@yorjs/core'
 ${interfaceImportStringify(`./${str}.interface`, str, ['controller', ...dependencies])}
 
@@ -24,11 +24,11 @@ export const ${str}Controller = defineController().implements(${I(str, 'controll
 `
 }
 
-const interfaceTemplate = (str, suffix = 'provider') => {
+export const interfaceTemplate = (str: string, suffix = 'provider') => {
   return `export const ${I(str, suffix)} = defineInterface<{/** */}>()\n`
 }
 
-const providerTemplate = (str, dependencies = [], suffix = 'provider') => {
+export const providerTemplate = (str: string, dependencies: string[] = [], suffix = 'provider') => {
   return `import { defineProvider } from '@yorjs/core'
 ${interfaceImportStringify(`./${str}.interface`, str, [suffix, ...dependencies])}
 
@@ -40,7 +40,7 @@ export const ${str}${firstLetterUpperCase(suffix)} = defineProvider().implements
 `
 }
 
-const moduleTemplate = (str) => {
+const moduleTemplate = (str: string) => {
   return `import { defineModule } from '@yorjs/core'
 import { ${str}Controller } from './${str}.controller'
 import { ${str}Service } from './${str}.service'
@@ -53,7 +53,7 @@ export const ${str}Module = defineModule({
 `
 }
 
-const genInterface = async (str, path = '.', suffix = 'provider') => {
+const genInterface = async (str: string, path = '.', suffix = 'provider') => {
   const YOR_INTERFACE_FILE_NAME = `${path}/${str}.interface.ts`
   await fs.ensureFile(YOR_INTERFACE_FILE_NAME)
 
@@ -68,21 +68,21 @@ const genInterface = async (str, path = '.', suffix = 'provider') => {
   fs.writeFileSync(YOR_INTERFACE_FILE_NAME, s.append(interfaceTemplate(str, suffix)).toString())
 }
 
-const genProvider = async (str, path = '.', dependencies = [], suffix = 'provider') => {
+const genProvider = async (str: string, path = '.', dependencies: string[] = [], suffix = 'provider') => {
   const YOR_PROVIDER_FILE_NAME = `${path}/${str}.${suffix}.ts`
   await fs.ensureFile(YOR_PROVIDER_FILE_NAME)
 
   fs.writeFile(YOR_PROVIDER_FILE_NAME, providerTemplate(str, dependencies, suffix))
 }
 
-const genController = async (str, path = '.', dependencies = []) => {
+const genController = async (str: string, path = '.', dependencies: string[] = []) => {
   const YOR_INTERFACE_FILE_NAME = `${path}/${str}.controller.ts`
   await fs.ensureFile(YOR_INTERFACE_FILE_NAME)
 
   fs.writeFile(YOR_INTERFACE_FILE_NAME, controllerTemplate(str, dependencies))
 }
 
-const genModule = async (str) => {
+const genModule = async (str: string) => {
   const YOR_MODULR_PATH = `./${str}`
   const YOR_MODULE_FILE_NAME = `${YOR_MODULR_PATH}/${str}.module.ts`
 
@@ -102,14 +102,9 @@ const genModule = async (str) => {
   fs.writeFile(YOR_MODULE_FILE_NAME, moduleTemplate(str))
 }
 
-const templates = {
+export const templates = {
   [Yor.MODULE]: genModule,
   [Yor.INTERFACE]: genInterface,
   [Yor.PROVIDER]: genProvider,
   [Yor.CONTROLLER]: genController
 }
-
-exports.controllerTemplate = controllerTemplate
-exports.interfaceTemplate = interfaceTemplate
-exports.providerTemplate = providerTemplate
-exports.templates = templates

@@ -1,7 +1,7 @@
-const { program } = require('commander')
-const { Yor, YorAlias } = require('./src/enums')
-const { templates } = require('./src/utils')
-const { version } = require('./package.json')
+import { program } from 'commander'
+import { Yor, YorAlias } from './src/enums'
+import { templates } from './src/utils'
+import { version } from './package.json'
 
 program.command('create')
   .version(version)
@@ -11,13 +11,13 @@ program.command('create')
   .option(`-${YorAlias.INTERFACE}, --${Yor.INTERFACE}`, 'yor interface')
   .option(`-${YorAlias.PROVIDER}, --${Yor.PROVIDER}`, 'yor provider')
   .option(`-${YorAlias.CONTROLLER}, --${Yor.CONTROLLER}`, 'yor controller')
-  .action((str, options) => {
+  .action((str, options: Record<Yor, boolean>) => {
     if (options.module) {
       templates[Yor.MODULE](str)
       return
     }
 
-    Object.keys(options).forEach(el => templates[el](str))
+    Object.keys(options).forEach((el: Yor) => templates[el](str))
   })
 
 program.parse()
