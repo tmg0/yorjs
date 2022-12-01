@@ -69,6 +69,7 @@ const controller = defineController().implements(IController).inject(IProvider).
 Use module in `vue` component
 
 ```
+<script>
 import { useModule } from '@yorjs/core'
 import { userModule } from '../user.module'
 
