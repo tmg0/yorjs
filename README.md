@@ -64,6 +64,11 @@ const controller = defineController().implements(IController).inject(IProvider).
     }
   }
 })
+
+const module = defineModule({
+  controller,
+  providers: [provider]
+})
 ```
 
 Use module in `vue` component
@@ -71,10 +76,10 @@ Use module in `vue` component
 ```
 <script>
 import { useModule } from '@yorjs/core'
-import { userModule } from '../user.module'
+import { module } from '../eg.module'
 
 <script setup lang="ts">
-const userModule = useModule(userModule)
+const userModule = useModule(module)
 </script>
 ```
 
