@@ -1,9 +1,9 @@
 {
   "name": "@yorjs/cli",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "bin": {
-    "yor": "node ./index.js"
+    "yor": "./index.js"
   },
   "keywords": [],
   "author": "",
