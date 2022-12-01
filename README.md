@@ -29,7 +29,7 @@ import { } from '@yorjs/core'
 | Package                          | Version (click for document)                                 |
 | -------------------------------- | ------------------------------------------------------------ |
 | [@yorjs/core](packages/core)     | [![NPM version](https://img.shields.io/npm/v/@yorjs/core)](packages/core/README.md) |
-| [@yorjs/cli](packages/cli)       | [![NPM version](https://img.shields.io/npm/v/@yorjs/cli)](packages/core/README.md) |
+| [@yorjs/cli](packages/cli)       | [![NPM version](https://img.shields.io/npm/v/@yorjs/cli)](packages/cli/README.md) |
 | [@yorjs/shared](packages/shared) | [![NPM version](https://img.shields.io/npm/v/@yorjs/shared)](packages/shared/README.md) |
 
 ## Usage
