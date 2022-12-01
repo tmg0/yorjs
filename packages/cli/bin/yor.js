@@ -1,7 +1,9 @@
+#! /usr/bin/env node
+
 const { program } = require('commander')
-const { Yor, YorAlias } = require('./src/enums')
-const { templates } = require('./src/utils')
-const { version } = require('./package.json')
+const { version } = require('../package.json')
+const { Yor, YorAlias } = require('./enums')
+const { templates } = require('./utils')
 
 program.command('create')
   .version(version)
@@ -21,3 +23,4 @@ program.command('create')
   })
 
 program.parse()
+
