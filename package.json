@@ -30,5 +30,8 @@
   },
   "dependencies": {
     "@babel/core": "^7.20.5"
+  },
+  "volta": {
+    "node": "18.12.1"
   }
 }
