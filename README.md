@@ -24,6 +24,14 @@ import module
 import { } from '@yorjs/core'
 ```
 
+## Packages
+
+| Package                          | Version (click for document)                                 |
+| -------------------------------- | ------------------------------------------------------------ |
+| [@yorjs/core](packages/core)     | [![NPM version](https://img.shields.io/npm/v/@yorjs/core)](packages/core/README.md) |
+| [@yorjs/cli](packages/cli)       | [![NPM version](https://img.shields.io/npm/v/@yorjs/cli)](packages/core/README.md) |
+| [@yorjs/shared](packages/shared) | [![NPM version](https://img.shields.io/npm/v/@yorjs/shared)](packages/shared/README.md) |
+
 ## Usage
 
 ### `Core`
@@ -67,6 +75,33 @@ import { userModule } from '../user.module'
 <script setup lang="ts">
 const userModule = useModule(userModule)
 </script>
+```
+
+### `Cli`
+
+The recommended way to create a yor module.
+
+Install cli tool
+
+```
+# use npm
+npm i @yorjs/cli -g
+
+# use pnpm
+pnpm add @yorjs/cli -g
+```
+
+Basic usage
+
+```
+yor create -h
+
+-V, --version     output the version number
+-M, --module      yor module
+-I, --interface   yor interface
+-P, --provider    yor provider
+-C, --controller  yor controller
+-h, --help        display help for command
 ```
 
 ## License

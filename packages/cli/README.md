@@ -2,7 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/@yorjs/cli)](https://www.npmjs.com/package/@yorjs/cli)
 
-A cli tool for creating yor module.
+The recommended way to create a yor module
 
 ## Installation
 
