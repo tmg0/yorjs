@@ -57,28 +57,28 @@ export class Provider<T> {
   }
 }
 
-export const defineProvider = () => {
-  class Factory<T, D extends Interface[]> {
-    public instance = new Provider<T>()
+class Factory<T, D extends Interface[]> {
+  public instance = new Provider<T>()
 
-    implements<I extends Interface<T>>(i: I): Factory<I['getter'], D> {
-      this.instance.implements(i)
-      return this
-    }
-
-    inject<I extends Interface[]>(...i: I) {
-      if (i && i.length > 0)
-        this.instance.inject(...i)
-
-      return this as unknown as Factory<T, I>
-    }
-
-    setup(getter: (...args: InterfacePartials<D>) => T, options: ProviderOptions = { singleton: true }) {
-      this.instance.getter = getter as (...args: any[]) => T
-      this.instance.singleton = !!options.singleton
-      return this.instance
-    }
+  implements<I extends Interface<T>>(i: I): Factory<I['getter'], D> {
+    this.instance.implements(i)
+    return this
   }
 
+  inject<I extends Interface[]>(...i: I) {
+    if (i && i.length > 0)
+      this.instance.inject(...i)
+
+    return this as unknown as Factory<T, I>
+  }
+
+  setup(getter: (...args: InterfacePartials<D>) => T, options: ProviderOptions = { singleton: true }) {
+    this.instance.getter = getter as (...args: any[]) => T
+    this.instance.singleton = !!options.singleton
+    return this.instance
+  }
+}
+
+export const defineProvider = () => {
   return new Factory()
 }
