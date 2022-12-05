@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@antfu/eslint-config": "^0.27.0",
     "@babel/preset-typescript": "^7.18.6",
