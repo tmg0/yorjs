@@ -79,8 +79,8 @@ const genController = async (str, path = '.', dependencies = []) => {
   fs.writeFile(YOR_INTERFACE_FILE_NAME, controllerTemplate(str, dependencies))
 }
 
-const genModule = async (str) => {
-  const YOR_MODULR_PATH = `./${str}`
+const genModule = async (str, path = '.') => {
+  const YOR_MODULR_PATH = `${path}/${str}`
   const YOR_MODULE_FILE_NAME = `${YOR_MODULR_PATH}/${str}.module.ts`
 
   if (!fs.existsSync(YOR_MODULR_PATH))

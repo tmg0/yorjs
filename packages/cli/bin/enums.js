@@ -6,10 +6,10 @@ const Yor = {
 }
 
 const YorAlias = {
-  MODULE: 'M',
-  INTERFACE: 'I',
-  PROVIDER: 'P',
-  CONTROLLER: 'C'
+  MODULE: 'm',
+  INTERFACE: 'i',
+  PROVIDER: 'p',
+  CONTROLLER: 'c'
 }
 
 module.exports = { Yor, YorAlias }
