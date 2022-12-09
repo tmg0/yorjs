@@ -1,5 +1,6 @@
 const fs = require('fs-extra')
 const { findStaticImports } = require('mlly')
+const consola = require('consola')
 const { Yor } = require('./enums')
 
 const firstLetterUpperCase = str => str.replace(str[0], str[0].toUpperCase())
