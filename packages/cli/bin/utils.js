@@ -1,11 +1,33 @@
 const fs = require('fs-extra')
 const { findStaticImports } = require('mlly')
-const consola = require('consola')
 const { Yor } = require('./enums')
 
-const firstLetterUpperCase = str => str.replace(str[0], str[0].toUpperCase())
+const toCamelCase = (str) => {
+  str = str.replace(str[0], str[0].toLowerCase())
 
-const I = (str, suffix = 'provider') => `I${firstLetterUpperCase(str)}${firstLetterUpperCase(suffix)}`
+  return str.replace(/\-(\w)/g, (_, item) => {
+    return item.toUpperCase()
+  })
+}
+
+const toKebabCase = (str) => {
+  str = str.replace(/[A-Z]/g, (item) => {
+    return `-${item.toLowerCase()}`
+  })
+
+  if (str.startsWith('-'))
+    return str.substr(1)
+
+  return str
+}
+
+const toPascalCase = (str) => {
+  str = toCamelCase(str)
+
+  return str.replace(str[0], str[0].toUpperCase())
+}
+
+const I = (str, suffix = 'provider') => `I${toPascalCase(str)}${toPascalCase(suffix)}`
 
 const interfaceImportStringify = (lib, str, suffix = []) => {
   const moduleArr = suffix.map(el => I(str, el))
@@ -32,7 +54,7 @@ const providerTemplate = (str, dependencies = [], suffix = 'provider') => {
   return `import { defineProvider } from '@yorjs/core'
 ${interfaceImportStringify(`./${str}.interface`, str, [suffix, ...dependencies])}
 
-export const ${str}${firstLetterUpperCase(suffix)} = defineProvider().implements(${I(str, suffix)}).inject(${dependencies.map(el => I(str, el)).join(', ')}).setup((${dependencies.join(', ')}) => {
+export const ${str}${toPascalCase(suffix)} = defineProvider().implements(${I(str, suffix)}).inject(${dependencies.map(el => I(str, el)).join(', ')}).setup((${dependencies.join(', ')}) => {
   return {
     /** */
   }

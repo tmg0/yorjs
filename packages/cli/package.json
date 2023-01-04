@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^9.4.1",
-    "consola": "^2.15.3",
     "fs-extra": "^11.0.0",
     "mlly": "^1.0.0"
   }
