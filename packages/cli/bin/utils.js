@@ -64,13 +64,13 @@ export const ${str}${toPascalCase(suffix)} = defineProvider().implements(${I(str
 
 const moduleTemplate = (str) => {
   return `import { defineModule } from '@yorjs/core'
-import { ${str}Controller } from './${str}.controller'
-import { ${str}Service } from './${str}.service'
-import { ${str}Repo } from './${str}.repo'
+import { ${toCamelCase(str)}Controller } from './${toKebabCase(str)}.controller'
+import { ${toCamelCase(str)}Service } from './${toKebabCase(str)}.service'
+import { ${toCamelCase(str)}Repo } from './${toKebabCase(str)}.repo'
 
-export const ${str}Module = defineModule({
-  controller: ${str}Controller,
-  providers: [${str}Service, ${str}Repo]
+export const ${toCamelCase(str)}Module = defineModule({
+  controller: ${toCamelCase(str)}Controller,
+  providers: [${toCamelCase(str)}Service, ${toCamelCase(str)}Repo]
 })
 `
 }
@@ -103,8 +103,8 @@ const genController = async (str, path = '.', dependencies = []) => {
 }
 
 const genModule = async (str, path = '.') => {
-  const YOR_MODULR_PATH = `${path}/${str}`
-  const YOR_MODULE_FILE_NAME = `${YOR_MODULR_PATH}/${str}.module.ts`
+  const YOR_MODULR_PATH = `${path}/${toKebabCase(str)}`
+  const YOR_MODULE_FILE_NAME = `${YOR_MODULR_PATH}/${toKebabCase(str)}.module.ts`
 
   if (!fs.existsSync(YOR_MODULR_PATH))
     fs.mkdir(YOR_MODULR_PATH)
