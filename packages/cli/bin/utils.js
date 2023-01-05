@@ -47,7 +47,7 @@ export const ${str}Controller = defineController().implements(${I(str, 'controll
 }
 
 const interfaceTemplate = (str, suffix = 'provider') => {
-  return `export const ${I(str, suffix)} = defineInterface<{/** */}>()\n`
+  return `export const ${I(toPascalCase(str), suffix)} = defineInterface<{/** */}>()\n`
 }
 
 const providerTemplate = (str, dependencies = [], suffix = 'provider') => {
@@ -76,7 +76,7 @@ export const ${toCamelCase(str)}Module = defineModule({
 }
 
 const genInterface = async (str, path = '.', suffix = 'provider') => {
-  const YOR_INTERFACE_FILE_NAME = `${path}/${str}.interface.ts`
+  const YOR_INTERFACE_FILE_NAME = `${path}/${toKebabCase(str)}.interface.ts`
   await fs.ensureFile(YOR_INTERFACE_FILE_NAME)
 
   let fileStr = fs.readFileSync(YOR_INTERFACE_FILE_NAME).toString()
