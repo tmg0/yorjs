@@ -36,7 +36,7 @@ const interfaceImportStringify = (lib, str, suffix = []) => {
 
 const controllerTemplate = (str, dependencies = []) => {
   return `import { defineController } from '@yorjs/core'
-${interfaceImportStringify(`./${str}.interface`, str, ['controller', ...dependencies])}
+${interfaceImportStringify(`./${toKebabCase(str)}.interface`, str, ['controller', ...dependencies])}
 
 export const ${str}Controller = defineController().implements(${I(str, 'controller')}).inject(${dependencies.map(el => I(str, el)).join(', ')}).setup((${dependencies.join(', ')}) => {
   return {
