@@ -52,7 +52,7 @@ const interfaceTemplate = (str, suffix = 'provider') => {
 
 const providerTemplate = (str, dependencies = [], suffix = 'provider') => {
   return `import { defineProvider } from '@yorjs/core'
-${interfaceImportStringify(`./${str}.interface`, str, [suffix, ...dependencies])}
+${interfaceImportStringify(`./${toKebabCase(str)}.interface`, str, [suffix, ...dependencies])}
 
 export const ${str}${toPascalCase(suffix)} = defineProvider().implements(${I(str, suffix)}).inject(${dependencies.map(el => I(str, el)).join(', ')}).setup((${dependencies.join(', ')}) => {
   return {
@@ -89,14 +89,14 @@ const genInterface = async (str, path = '.', suffix = 'provider') => {
 }
 
 const genProvider = async (str, path = '.', dependencies = [], suffix = 'provider') => {
-  const YOR_PROVIDER_FILE_NAME = `${path}/${str}.${suffix}.ts`
+  const YOR_PROVIDER_FILE_NAME = `${path}/${toKebabCase(str)}.${suffix}.ts`
   await fs.ensureFile(YOR_PROVIDER_FILE_NAME)
 
   fs.writeFile(YOR_PROVIDER_FILE_NAME, providerTemplate(str, dependencies, suffix))
 }
 
 const genController = async (str, path = '.', dependencies = []) => {
-  const YOR_INTERFACE_FILE_NAME = `${path}/${str}.controller.ts`
+  const YOR_INTERFACE_FILE_NAME = `${path}/${toKebabCase(str)}.controller.ts`
   await fs.ensureFile(YOR_INTERFACE_FILE_NAME)
 
   fs.writeFile(YOR_INTERFACE_FILE_NAME, controllerTemplate(str, dependencies))
