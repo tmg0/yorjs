@@ -66,7 +66,7 @@ export class Module<T> {
     })
   }
 
-  useExport<T>(provider: Provider<T> | string): T | undefined {
+  useExport<T>(provider: Provider<T> | string): T {
     if (typeof provider !== 'string') {
       if (this.exports.some(({ token }) => token === provider.token))
         return useProvider(provider)
@@ -74,14 +74,16 @@ export class Module<T> {
         throw new Error('should export current provider in this module')
     }
 
-    if (typeof provider === 'string') {
-      const p = this.exports.find(({ name }) => name === provider)
+    const p = this.exports.filter(({ name }) => name === provider)
 
-      if (!p)
-        return
+    if (!p.length)
+      throw new Error(`do not have provider named ${provider}`)
+    if (p.length > 1)
+      throw new Error(`have more than one provider named ${provider}`)
 
-      return useProvider(p) as T
-    }
+    const [r] = p
+
+    return useProvider(r) as T
   }
 }
 
