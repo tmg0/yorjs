@@ -66,11 +66,22 @@ export class Module<T> {
     })
   }
 
-  useExport<T>(provider: Provider<T>): T {
-    if (this.exports.some(({ token }) => token === provider.token))
-      return useProvider(provider)
-    else
-      throw new Error('should export current provider in this module')
+  useExport<T>(provider: Provider<T> | string): T | undefined {
+    if (typeof provider !== 'string') {
+      if (this.exports.some(({ token }) => token === provider.token))
+        return useProvider(provider)
+      else
+        throw new Error('should export current provider in this module')
+    }
+
+    if (typeof provider === 'string') {
+      const p = this.exports.find(({ name }) => name === provider)
+
+      if (!p)
+        return
+
+      return useProvider(p) as T
+    }
   }
 }
 

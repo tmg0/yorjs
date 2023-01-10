@@ -17,6 +17,7 @@ export interface ProviderMetadata<T> {
 }
 
 export class Provider<T> {
+  public name = ''
   public token = Symbol('TOKEN')
   public instance?: T
   public getter: (...args: any[]) => T
@@ -58,7 +59,12 @@ export class Provider<T> {
 }
 
 class Factory<T, D extends Interface[]> {
+  public name = ''
   public instance = new Provider<T>()
+
+  constructor(name?: string) {
+    this.name = name || ''
+  }
 
   implements<I extends Interface<T>>(i: I): Factory<I['getter'], D> {
     this.instance.implements(i)
@@ -75,10 +81,11 @@ class Factory<T, D extends Interface[]> {
   setup(getter: (...args: InterfacePartials<D>) => T, options: ProviderOptions = { singleton: true }) {
     this.instance.getter = getter as (...args: any[]) => T
     this.instance.singleton = !!options.singleton
+    this.instance.name = this.name
     return this.instance
   }
 }
 
-export const defineProvider = () => {
-  return new Factory()
+export const defineProvider = (name?: string) => {
+  return new Factory(name)
 }
