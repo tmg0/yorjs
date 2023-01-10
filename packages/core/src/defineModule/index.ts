@@ -1,5 +1,6 @@
 import { useProvider } from '../useProvider'
 import type { Controller } from '../defineController'
+import { defineController } from '../defineController'
 import type { Provider } from '../defineProvider'
 
 const injectImpls = (ctx: Provider<any> | Controller<any>, providers: Provider<unknown>[] = []) => {
@@ -31,7 +32,7 @@ const injectImpls = (ctx: Provider<any> | Controller<any>, providers: Provider<u
 }
 
 export interface ModuleOptions<T> {
-  controller: Controller<T>
+  controller?: Controller<T>
   providers?: Provider<unknown>[]
   exports?: Provider<unknown>[]
   imports?: Module<unknown>[]
@@ -44,7 +45,7 @@ export class Module<T> {
   public imports: Module<unknown>[] = []
 
   constructor(options: ModuleOptions<any>) {
-    this.controller = options.controller
+    this.controller = options.controller || defineController().setup(() => ({}))
     this.providers = options.providers || []
     this.imports = options.imports || []
     this.exports = options.exports || this.providers || []
