@@ -1,6 +1,6 @@
 {
   "name": "@yorjs/cli",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
   "bin": {
     "yor": "./bin/yor.js"
