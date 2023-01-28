@@ -3,8 +3,9 @@ import type { Provider } from 'src/defineProvider'
 import { useProvider } from 'src/useProvider'
 
 export const isString = (str: any): str is string => typeof str === 'string'
+export const isStringArray = (strArr: any): strArr is string[] => Array.isArray(strArr)
 
-export const useExports = <T>(module: Module<T>, provider: string | Provider<any>) => {
+export const useExports = <T>(module: Module<any>, provider: string | Provider<T>): T => {
   if (isString(provider)) {
     const p = module.exports.filter(({ name }) => name === provider)
 
@@ -19,7 +20,7 @@ export const useExports = <T>(module: Module<T>, provider: string | Provider<any
   }
 
   if (module.exports.some(({ token }) => token === provider.token))
-    return useProvider(provider)
+    return useProvider(provider) as T
   else
     throw new Error('should export current provider in this module')
 }
