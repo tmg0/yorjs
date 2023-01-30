@@ -1,6 +1,6 @@
-import type { Module } from 'src/defineModule'
-import type { Provider } from 'src/defineProvider'
-import { useProvider } from 'src/useProvider'
+import type { Provider } from '../defineProvider'
+import { useProvider } from '../useProvider'
+import type { Module } from '../defineModule'
 
 export const isString = (str: any): str is string => typeof str === 'string'
 export const isStringArray = (strArr: any): strArr is string[] => Array.isArray(strArr)
