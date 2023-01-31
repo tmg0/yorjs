@@ -2,12 +2,12 @@
   "name": "@yorjs/common",
   "version": "0.0.1",
   "description": "",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.js",
   "module": "./dist/index.mjs",
-  "unpkg": "./dist/index.iife.min.js",
+  "unpkg": "./dist/index.global.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsup"
   },
   "keywords": [],
   "author": "",

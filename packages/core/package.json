@@ -2,9 +2,9 @@
   "name": "@yorjs/core",
   "version": "2.0.2-rc.3",
   "description": "",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.js",
   "module": "./dist/index.mjs",
-  "unpkg": "./dist/index.iife.min.js",
+  "unpkg": "./dist/index.global.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsup"
