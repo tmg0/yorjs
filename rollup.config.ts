@@ -8,7 +8,7 @@ import { name as iifeName } from './package.json'
 const configs: RollupOptions[] = []
 
 for (const { name, build, external, globals } of packages) {
-  if (!build) continue
+  if (!build) { continue }
 
   const functionNames = ['index']
 

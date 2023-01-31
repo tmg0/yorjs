@@ -11,8 +11,8 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@antfu/eslint-config": "^0.27.0",
     "@babel/preset-typescript": "^7.18.6",
+    "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-typescript": "^8.4.0",
     "@types/jest": "^29.0.0",
