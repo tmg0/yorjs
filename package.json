@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "pnpm -r --filter=./packages/* run build",
-    "dev:rollup": "rollup --config rollup.config.ts --configPlugin typescript --watch",
-    "build:rollup": "rollup --config rollup.config.ts --configPlugin typescript",
+    "dev": "pnpm -r --filter=./packages/* dev",
+    "dev:core": "pnpm -C ./packages/core dev",
+    "dev:shared": "pnpm -C ./packages/shared dev",
+    "build": "pnpm -r --filter=./packages/* build",
     "test": "jest"
   },
   "keywords": [],

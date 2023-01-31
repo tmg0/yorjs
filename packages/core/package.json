@@ -1,12 +1,13 @@
 {
   "name": "@yorjs/core",
-  "version": "2.0.2-rc.3",
+  "version": "2.0.2-rc.4",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "unpkg": "./dist/index.global.js",
   "types": "./dist/index.d.ts",
   "scripts": {
+    "dev": "tsup --watch",
     "build": "tsup"
   },
   "keywords": [],

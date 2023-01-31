@@ -9,8 +9,7 @@ export interface InjectHooks<T> {
 export const injectInterceptors = <T, I>(context: Provider<T>, interceptors: Interceptor[], instance: I): I => {
   if (interceptors.length) {
     for (const key in instance) {
-      if (!isFunction(instance[key]))
-        continue
+      if (!isFunction(instance[key])) { continue }
 
       const event: any = instance[key]
       instance[key] = function (...args: any) {
@@ -57,8 +56,7 @@ export const useProvider = <T>(options: Provider<T>, hooks?: InjectHooks<T>): T 
   const guards = options.guards || []
 
   if (options.singleton && options.instance) {
-    if (hooks)
-      hooks.created(options.token, options.instance)
+    if (hooks) { hooks.created(options.token, options.instance) }
     return options.instance
   }
 
@@ -74,8 +72,7 @@ export const useProvider = <T>(options: Provider<T>, hooks?: InjectHooks<T>): T 
   if (!metadata.dependencies.length) {
     const instance = getter()
     options.instance = instance
-    if (hooks)
-      hooks.created(options.token, instance)
+    if (hooks) { hooks.created(options.token, instance) }
     return instance
   }
 
@@ -91,7 +88,6 @@ export const useProvider = <T>(options: Provider<T>, hooks?: InjectHooks<T>): T 
 
   options.instance = instance
 
-  if (hooks)
-    hooks.created(options.token, instance)
+  if (hooks) { hooks.created(options.token, instance) }
   return instance
 }
