@@ -6,11 +6,11 @@ export class Interceptor {
   public getter: InterceptorGetter
   public errorHandler?: (context?: Provider<any>) => void
 
-  constructor(getter: InterceptorGetter) {
+  constructor (getter: InterceptorGetter) {
     this.getter = getter
   }
 
-  error(handler: (context?: Provider<any>) => void) {
+  error (handler: (context?: Provider<any>) => void) {
     this.errorHandler = handler
     return this
   }

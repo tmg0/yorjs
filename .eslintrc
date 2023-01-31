@@ -1,6 +1,7 @@
 {
   "extends": "@nuxtjs/eslint-config-typescript",
   "rules": {
+    "no-use-before-define": "off",
     "@typescript-eslint/comma-dangle": ["error", "never"]
   }
 }
