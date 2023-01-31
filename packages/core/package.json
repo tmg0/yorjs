@@ -7,7 +7,7 @@
   "unpkg": "./dist/index.iife.min.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc --declaration --emitDeclarationOnly ./index.ts"
+    "build": "tsup"
   },
   "keywords": [],
   "author": "",
