@@ -1,9 +1,0 @@
-{
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@yorjs/core": ["../../packages/core/index"]
-    }
-  }
-}
