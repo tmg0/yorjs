@@ -8,5 +8,6 @@ export default defineConfig(options => ({
   treeshake: true,
   dts: true,
   format: ['cjs', 'esm', 'iife'],
+  external: ['@yorjs/shared'],
   minify: !options.watch
 }))
