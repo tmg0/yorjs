@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
+    "upgrade": "pnpm version patch && git push",
     "ci-publish": "tsup && pnpm publish"
   },
   "keywords": [],
