@@ -18,6 +18,6 @@
     "noUnusedLocals": true,
     "types": ["jest"]
   },
-  "include": ["packages/**/*", "meta", "rollup.config.ts"],
+  "include": ["packages/**/*"],
   "exclude": ["node_modules", "**/dist"]
 }
