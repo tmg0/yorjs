@@ -1,6 +1,6 @@
 {
   "name": "@yorjs/core",
-  "version": "2.0.2",
+  "version": "2.0.1",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "ci-publish": "tsup && pnpm version patch && git commit -a -m \"chore: increase core version\" && git push"
+    "ci-publish": "tsup && pnpm publish"
   },
   "keywords": [],
   "author": "",
