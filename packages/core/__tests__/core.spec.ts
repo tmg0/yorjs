@@ -41,6 +41,6 @@ export const module = defineModule({
 })
 
 export const validator = defineValidator().setup(() => ({
-  username: defineField('').isString(),
-  password: defineField('').isString()
+  stringField: defineField('').isString(),
+  numberField: defineField(0).isNumber()
 }))
