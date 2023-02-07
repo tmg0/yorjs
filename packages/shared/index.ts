@@ -1,6 +1,8 @@
 export const flatten = <T extends any[]>(arr: T): any => [...arr]
 
-export const isString = (str: any): str is string => typeof str === 'string'
+export const isString = (val: any): val is string => typeof val === 'string'
+
+export const isNumber = (val: any): val is number => typeof val === 'number'
 
 export const isFunction = (val: any): val is Function => typeof val === 'function'
 

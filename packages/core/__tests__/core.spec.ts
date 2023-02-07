@@ -1,4 +1,4 @@
-import { defineController, defineInterceptor, defineInterface, defineModule, defineProvider } from '../index'
+import { defineController, defineField, defineInterceptor, defineInterface, defineModule, defineProvider, defineValidator } from '../index'
 
 describe('jest', () => {
   it('runtime', () => {
@@ -39,3 +39,8 @@ export const module = defineModule({
   controller,
   providers: [providerA, providerB]
 })
+
+export const validator = defineValidator().setup(() => ({
+  username: defineField('').isString(),
+  password: defineField('').isString()
+}))
