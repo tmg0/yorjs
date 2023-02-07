@@ -1,4 +1,4 @@
-import { defineController, defineField, defineInterceptor, defineInterface, defineModule, defineProvider, defineValidator } from '../index'
+import { defineController, defineField, defineInterface, defineModule, defineProvider, defineValidator } from '../index'
 
 describe('jest', () => {
   it('runtime', () => {
@@ -12,11 +12,6 @@ export const IProviderB = defineInterface<{ doB:() => Promise<string> }>()
 
 export const IController = defineInterface<{ do:(parmas: 'a' | 'b') => string | Promise<string> }>()
 
-export const interactor = defineInterceptor(() => {
-  console.log('Before')
-  return () => { console.log('After') }
-})
-
 export const providerA = defineProvider('pa').implements(IProviderA).setup(() => ({ doA () { return 'A' } }))
 
 export const providerB = defineProvider('pb').implements(IProviderB).setup(() => ({
@@ -24,10 +19,10 @@ export const providerB = defineProvider('pb').implements(IProviderB).setup(() =>
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve('B')
-      }, 1000)
+      }, 500)
     })
   }
-})).useInterceptors(interactor)
+}))
 
 export const controller = defineController().implements(IController).inject(IProviderA, IProviderB).setup((a, b) => ({
   do (parmas) {

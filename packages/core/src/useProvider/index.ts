@@ -72,6 +72,7 @@ export const useProvider = <T>(options: Provider<T>, hooks?: InjectHooks<T>): T 
   if (!metadata.dependencies.length) {
     const instance = getter()
     options.instance = instance
+    injectInterceptors(options, interceptors, instance)
     if (hooks) { hooks.created(options.token, instance) }
     return instance
   }
