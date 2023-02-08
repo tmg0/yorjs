@@ -1,5 +1,5 @@
 import { isString, isNumber, mapValuesDeep, isObject } from '@yorjs/shared'
-import { Field } from '.'
+import { Field, Validator } from '.'
 
 export enum FieldValidate {
   IS_STRING = 'isString',
@@ -11,6 +11,7 @@ export enum FieldValidate {
 }
 
 export const isField = (value: any): value is Field => value.constructor === Field
+export const isValidator = (value: any): value is Validator<any> => value.constructor === Validator
 
 export const policy: Record<FieldValidate, (params: Field) => boolean> = {
   isString: (field: Field) => isString(field.value),
@@ -22,17 +23,33 @@ export const policy: Record<FieldValidate, (params: Field) => boolean> = {
 }
 
 export const validateFeilds = <T extends Record<string, any>>(fields: T): Promise<void> => {
-  const valid = !Object.entries(fields).some(([key, field]) => {
-    if (!isField(field)) { return true }
+  let valid = true
+  let hasValidator = false
 
-    for (const step of field.chains) {
-      if (!policy[step](fields[key])) { return true }
+  return new Promise((resolve, reject) => {
+    for (const [key, field] of Object.entries(fields)) {
+      if (isField(field)) {
+        for (const step of field.chains) {
+          if (!policy[step](fields[key])) {
+            valid = false
+            break
+          }
+        }
+
+        if (!valid) { break }
+      }
+
+      if (isValidator(field)) {
+        hasValidator = true
+        field.validate().then(resolve).catch(() => {
+          valid = false
+          reject(valid)
+        })
+      }
     }
 
-    return false
+    if (!hasValidator) { valid ? resolve() : reject(valid) }
   })
-
-  return valid ? Promise.resolve() : Promise.reject(valid)
 }
 
 export const validateFeildsDeep = <T extends Record<string, any>>(fields: T): Promise<void> => {

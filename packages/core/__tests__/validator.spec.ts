@@ -14,7 +14,6 @@ const parseValidateResult = async (validator: { validate: () => Promise<void> })
 
 describe('define validator', () => {
   it('should check default value', async () => {
-    reset()
     expect(await parseValidateResult(validator)).toBe(true)
   })
 
@@ -27,6 +26,12 @@ describe('define validator', () => {
   it('should check number type field', async () => {
     reset()
     validator.value.numberField = ''
+    expect(await parseValidateResult(validator)).toBe(false)
+  })
+
+  it('should check object type field', async () => {
+    reset()
+    validator.value.objectField.value.strF = 0
     expect(await parseValidateResult(validator)).toBe(false)
   })
 })

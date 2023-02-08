@@ -1,4 +1,5 @@
-import { mapValuesDeep, isObject } from '@yorjs/shared'
+
+import { mapValues } from '@yorjs/shared'
 import { FieldValidate, isField, validateFeilds } from './_utils'
 
 type FieldValues<T> = { [P in keyof T]: T[P] extends Field ? T[P]['value'] : any }
@@ -36,7 +37,7 @@ export class Field {
   }
 }
 
-class Validator<T extends Record<string, any>> {
+export class Validator<T extends Record<string, any>> {
   public _fields: T
 
   constructor (getter: () => T) {
@@ -48,11 +49,17 @@ class Validator<T extends Record<string, any>> {
   }
 
   get value () {
-    const fields: any = mapValuesDeep(this._fields, ({ value }) => value, value => !isField(value) && isObject(value))
+    // const fields: any = mapValuesDeep(this._fields, ({ value }) => value, (value) => {
+    //   return !isValidator(value) && !isField(value) && isObject(value)
+    // })
+
+    const fields: Record<string, any> = mapValues(this._fields, (field: any) => {
+      return isField(field) ? field.value : field
+    })
 
     return new Proxy(fields as FieldValues<T>, {
-      get (target) {
-        return target
+      get: (_, key: string) => {
+        return this._fields[key]
       },
       set: (target: Record<string, any>, key: string, value) => {
         target[key] = value
