@@ -37,9 +37,5 @@ export const module = defineModule({
 
 export const validator = defineValidator().setup(() => ({
   stringField: defineField('').isString(),
-  numberField: defineField(0).isNumber(),
-  objectField: {
-    fA: defineField('').isString(),
-    fB: defineField(0).isNumber()
-  }
+  numberField: defineField(0).isNumber()
 }))

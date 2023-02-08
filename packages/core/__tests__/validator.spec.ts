@@ -3,8 +3,6 @@ import { validator } from './core.spec'
 const reset = () => {
   validator.value.stringField = ''
   validator.value.numberField = 0
-  validator.value.objectField.fA = ''
-  validator.value.objectField.fB = 0
 }
 
 const parseValidateResult = async (validator: { validate: () => Promise<void> }) => {
@@ -29,12 +27,6 @@ describe('define validator', () => {
   it('should check number type field', async () => {
     reset()
     validator.value.numberField = ''
-    expect(await parseValidateResult(validator)).toBe(false)
-  })
-
-  it('should check deep object type field', async () => {
-    reset()
-    validator.value.objectField.fA = 0
     expect(await parseValidateResult(validator)).toBe(false)
   })
 })

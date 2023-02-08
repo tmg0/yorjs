@@ -59,24 +59,36 @@ class Validator<T extends Record<string, any>> {
   }
 
   validate (): Promise<void> {
-    return new Promise((resolve, reject) => {
-      let valid = true
-      mapValuesDeep(this._fields, (field?: Field) => {
-        if (!field || !isField(field)) { return }
+    // return new Promise((resolve, reject) => {
+    //   let valid = true
+    //   mapValuesDeep(this._fields, (field?: Field) => {
+    //     if (!field || !isField(field)) { return }
 
-        for (const step of field.chains) {
-          if (!this._check[step](field)) {
-            valid = false
-            reject(field)
-            break
-          }
-        }
+    //     for (const step of field.chains) {
+    //       if (!this._check[step](field)) {
+    //         valid = false
+    //         reject(field)
+    //         break
+    //       }
+    //     }
 
-        return field
-      }, value => !isField(value) && isObject(value))
+    //     return field
+    //   }, value => !isField(value) && isObject(value))
 
-      if (valid) { resolve() }
+    //   if (valid) { resolve() }
+    // })
+
+    const valid = !Object.entries(this._fields).some(([key, field]) => {
+      if (!isField(field)) { return true }
+
+      for (const step of field.chains) {
+        if (!this._check[step](this._fields[key])) { return true }
+      }
+
+      return false
     })
+
+    return valid ? Promise.resolve() : Promise.reject(valid)
   }
 
   get value () {
@@ -86,7 +98,7 @@ class Validator<T extends Record<string, any>> {
       get (target) {
         return target
       },
-      set: (target: any, key: string, value) => {
+      set: (target: Record<string, any>, key: string, value) => {
         target[key] = value
         this._fields[key].value = value
         return true
