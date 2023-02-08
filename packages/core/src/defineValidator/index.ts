@@ -1,4 +1,6 @@
-import { isString, isNumber } from '@yorjs/shared'
+import { isString, isNumber, mapValuesDeep, isObject } from '@yorjs/shared'
+
+type FieldValues<T> = { [P in keyof T]: T[P] extends Field ? T[P]['value'] : any }
 
 export enum FieldValidate {
   IS_STRING = 'isString',
@@ -6,6 +8,8 @@ export enum FieldValidate {
   MIN = 'min',
   MAX = 'max'
 }
+
+export const isField = (value: any): value is Field => value.constructor === Field
 
 export class Field {
   public value: any
@@ -40,9 +44,7 @@ export class Field {
   }
 }
 
-type FieldValues<T> = { [P in keyof T]: T[P] extends Field ? T[P]['value'] : any }
-
-class Validator<T extends Record<string, Field>> {
+class Validator<T extends Record<string, any>> {
   public _fields: T
 
   public _check: Record<FieldValidate, (params: Field) => boolean> = {
@@ -56,22 +58,29 @@ class Validator<T extends Record<string, Field>> {
     this._fields = getter()
   }
 
-  validate () {
-    return !Object.entries(this._fields).some(([key, { chains }]) => {
-      for (const step of chains) {
-        if (!this._check[step](this._fields[key])) { return true }
-      }
+  validate (): Promise<void> {
+    return new Promise((resolve, reject) => {
+      let valid = true
+      mapValuesDeep(this._fields, (field?: Field) => {
+        if (!field || !isField(field)) { return }
 
-      return false
+        for (const step of field.chains) {
+          if (!this._check[step](field)) {
+            valid = false
+            reject(field)
+            break
+          }
+        }
+
+        return field
+      }, value => !isField(value) && isObject(value))
+
+      if (valid) { resolve() }
     })
   }
 
   get value () {
-    const fields: any = {}
-
-    Object.entries(this._fields).forEach(([key, field]) => {
-      fields[key] = field.value
-    })
+    const fields: any = mapValuesDeep(this._fields, ({ value }) => value, value => !isField(value) && isObject(value))
 
     return new Proxy(fields as FieldValues<T>, {
       get (target) {
@@ -87,7 +96,7 @@ class Validator<T extends Record<string, Field>> {
 }
 
 export const defineValidator = () => ({
-  setup<T extends Record<string, Field>> (getter: () => T) {
+  setup<T extends Record<string, any>> (getter: () => T) {
     return new Validator(getter)
   }
 })
