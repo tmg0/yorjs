@@ -1,7 +1,7 @@
 
 import { isNumber, isObject, isString, mapValues, mapValuesDeep } from '@yorjs/shared'
 
-type FieldValues<T> = { [P in keyof T]: T[P] extends Field ? T[P]['value'] : any }
+type ValidatorFields<T> = { [P in keyof T]: T[P] extends Field ? T[P]['value'] : T[P] extends Validator<any> ? ValidatorFields<T[P]> : any }
 
 export enum FieldValidate {
   IS_STRING = 'isString',
@@ -127,7 +127,7 @@ export class Validator<T extends Record<string, any>> {
       return field
     })
 
-    return new Proxy(fields as FieldValues<T>, {
+    return new Proxy(fields as ValidatorFields<T>, {
       get: (_, key: string) => {
         return this._fields[key]
       },
