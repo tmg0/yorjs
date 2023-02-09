@@ -21,7 +21,7 @@ export const validatorPolicy: Record<FieldValidate, (params: Field) => boolean> 
   isArray: (field: Field) => !!field,
   min: (field: Field) => !!(field && isNumber(field.value) && field.value > Number(field._min)),
   max: (field: Field) => !!(field && isNumber(field.value) && field.value < Number(field._max)),
-  maxLength: (field: Field) => !!field
+  maxLength: (field: Field) => validatorPolicy.isArray(field.value) && field.value.length < Number(field._maxLength)
 }
 
 export const validateFeilds = <T extends Record<string, any>>(fields: T): Promise<void> => {
@@ -80,6 +80,7 @@ export class Field {
   public chains: FieldValidate[] = []
   public _min?: number
   public _max?: number
+  public _maxLength?: number
 
   constructor (value: any) {
     this.value = value
@@ -104,6 +105,12 @@ export class Field {
   max ({ _max }: this) {
     this._max = _max
     this.chains.push(FieldValidate.MAX)
+    return this
+  }
+
+  maxLength ({ _maxLength }: this) {
+    this._maxLength = _maxLength
+    this.chains.push(FieldValidate.MAX_LENGTH)
     return this
   }
 }
