@@ -1,6 +1,6 @@
 {
   "name": "@yorjs/core",
-  "version": "2.0.2",
+  "version": "2.1.0-rc.0",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -15,6 +15,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@yorjs/shared": "workspace:^1.0.0"
+    "@yorjs/shared": "workspace:^1.0.3"
   }
 }
