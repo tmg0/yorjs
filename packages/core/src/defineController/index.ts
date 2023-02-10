@@ -35,10 +35,10 @@ export class Controller<T> {
   }
 }
 
-class Factory<T, D extends Interface[]> {
+export class ControllerFactory<T, D extends Interface[]> {
   public instance = new Controller<T>()
 
-  implements<I extends Interface<T>> (i: I): Factory<I['getter'], D> {
+  implements<I extends Interface<T>> (i: I): ControllerFactory<I['getter'], D> {
     this.instance.implements(i)
     return this
   }
@@ -46,7 +46,7 @@ class Factory<T, D extends Interface[]> {
   inject<I extends Interface[]> (...i: I) {
     if (i && i.length > 0) { this.instance.inject(...i) }
 
-    return this as unknown as Factory<T, I>
+    return this as unknown as ControllerFactory<T, I>
   }
 
   setup (getter: (...args: InterfacePartials<D>) => T) {
@@ -56,5 +56,5 @@ class Factory<T, D extends Interface[]> {
 }
 
 export const defineController = () => {
-  return new Factory()
+  return new ControllerFactory()
 }

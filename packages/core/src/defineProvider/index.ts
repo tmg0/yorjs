@@ -58,7 +58,7 @@ export class Provider<T> {
   }
 }
 
-class Factory<T, D extends Interface[]> {
+class ProviderFactory<T, D extends Interface[]> {
   public name = ''
   public instance = new Provider<T>()
 
@@ -66,7 +66,7 @@ class Factory<T, D extends Interface[]> {
     this.name = name || ''
   }
 
-  implements<I extends Interface<T>> (i: I): Factory<I['getter'], D> {
+  implements<I extends Interface<T>> (i: I): ProviderFactory<I['getter'], D> {
     this.instance.implements(i)
     return this
   }
@@ -74,7 +74,7 @@ class Factory<T, D extends Interface[]> {
   inject<I extends Interface[]> (...i: I) {
     if (i && i.length > 0) { this.instance.inject(...i) }
 
-    return this as unknown as Factory<T, I>
+    return this as unknown as ProviderFactory<T, I>
   }
 
   setup (getter: (...args: InterfacePartials<D>) => T, options: ProviderOptions = { singleton: true }) {
@@ -86,5 +86,5 @@ class Factory<T, D extends Interface[]> {
 }
 
 export const defineProvider = (name?: string) => {
-  return new Factory(name)
+  return new ProviderFactory(name)
 }

@@ -1,3 +1,6 @@
 export * from './injectable.decorator'
 export * from './controller.decorator'
 export * from './module.decorator'
+export * from './interface.decorator'
+export * from './implements.decorator'
+export * from './setup.decorator'
