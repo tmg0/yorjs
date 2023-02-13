@@ -48,6 +48,7 @@ export const moduleA = defineModule({
 })
 
 export const moduleB = defineModule({
+  controller: controllerB,
   providers: [providerC, providerD]
 })
 

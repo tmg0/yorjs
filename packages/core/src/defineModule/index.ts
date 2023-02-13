@@ -1,7 +1,7 @@
 import { useProvider } from '../useProvider'
 import type { Controller } from '../defineController'
 import { defineController } from '../defineController'
-import type { Provider } from '../defineProvider'
+import { isProvider, Provider } from '../defineProvider'
 
 const injectImpls = (ctx: Provider<any> | Controller<any>, providers: Provider<unknown>[] = []) => {
   const deps: Provider<any>[] = []
@@ -10,17 +10,19 @@ const injectImpls = (ctx: Provider<any> | Controller<any>, providers: Provider<u
   for (const item of i) {
     let impl: Provider<any>
 
-    if (!item.implements.length) { throw new Error('should have at least one implement for this interface') }
+    const iF = isProvider(item) ? item.metadata.interface : item
 
-    if (item.implements.length > 1) {
-      const scoped = providers.find(({ metadata: { interface: { token } } }) => token === item.token)
+    if (!iF.implements.length) { throw new Error('should have at least one implement for this interface') }
+
+    if (iF.implements.length > 1) {
+      const scoped = providers.find(({ metadata: { interface: { token } } }) => token === iF.token)
 
       if (!scoped && !ctx.dependencies.length) { throw new Error('should declare dependencies if you have more than one implements') }
 
       if (scoped) { impl = scoped }
     }
 
-    impl = item.implements[0]
+    impl = iF.implements[0]
 
     if (impl) { deps.push(impl) }
   }
