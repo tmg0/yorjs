@@ -3,7 +3,7 @@ import type { Interceptor } from '../defineInterceptor'
 import type { Guard } from '../defineGuard'
 import { Interface } from '../defineInterface'
 
-type DependencyPartials<T> = { [P in keyof T]: Provider<T[P]> }
+type DependencyPartials<T> = { [P in keyof T]: Provider<T[P], string> }
 type InterfacePartials<T> = { [P in keyof T]: T[P] extends Interface ? T[P]['getter'] : any }
 
 export interface ProviderOptions {
@@ -16,8 +16,8 @@ export interface ProviderMetadata<T> {
   injectors: Interface[]
 }
 
-export class Provider<T> {
-  public name = ''
+export class Provider<T, N extends string = any> {
+  public name = '' as N
   public token = Symbol('TOKEN')
   public instance?: T
   public getter: (...args: any[]) => T
@@ -31,14 +31,14 @@ export class Provider<T> {
     this.singleton = !!options?.singleton
   }
 
-  dependencies (...dependencies: DependencyPartials<Parameters<Provider<T>['getter']>>) {
+  dependencies (...dependencies: DependencyPartials<Parameters<Provider<T, string>['getter']>>) {
     this.metadata.dependencies = flatten(dependencies)
     return this
   }
 
-  implements<I extends Interface> (i: I): Provider<I['getter']> {
+  implements<I extends Interface> (i: I): Provider<I['getter'], N> {
     this.metadata.interface = i
-    this.metadata.interface.implements.push(this)
+    this.metadata.interface.implements.push(this as Provider<any>)
     return this
   }
 
@@ -58,15 +58,15 @@ export class Provider<T> {
   }
 }
 
-class ProviderFactory<T, D extends Interface[]> {
-  public name = ''
-  public instance = new Provider<T>()
+class ProviderFactory<T, D extends Interface[], N extends string = ''> {
+  public name = '' as N
+  public instance = new Provider<T, N>()
 
-  constructor (name?: string) {
-    this.name = name || ''
+  constructor (name?: N) {
+    this.name = (name || '') as N
   }
 
-  implements<I extends Interface<T>> (i: I): ProviderFactory<I['getter'], D> {
+  implements<I extends Interface<T>> (i: I): ProviderFactory<I['getter'], D, N> {
     this.instance.implements(i)
     return this
   }
@@ -74,7 +74,7 @@ class ProviderFactory<T, D extends Interface[]> {
   inject<I extends Interface[]> (...i: I) {
     if (i && i.length > 0) { this.instance.inject(...i) }
 
-    return this as unknown as ProviderFactory<T, I>
+    return this as unknown as ProviderFactory<T, I, N>
   }
 
   setup (getter: (...args: InterfacePartials<D>) => T, options: ProviderOptions = { singleton: true }) {
@@ -85,6 +85,6 @@ class ProviderFactory<T, D extends Interface[]> {
   }
 }
 
-export const defineProvider = (name?: string) => {
+export const defineProvider = <T extends string>(name?: T) => {
   return new ProviderFactory(name)
 }
