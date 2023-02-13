@@ -1,5 +1,5 @@
-import { useModule } from '../index'
-import { moduleA, moduleB, providerA } from './core.spec'
+import { useExports, useModule } from '../index'
+import { moduleA, moduleB } from './core.spec'
 
 describe('use module', () => {
   it('should have controller method in module', () => {
@@ -8,7 +8,7 @@ describe('use module', () => {
   })
 
   it('should inject impls when use provider', () => {
-    const { doA } = moduleA.useExport(providerA)
+    const { pa: { doA } } = useExports(moduleA)
     expect(doA()).toBe('A')
   })
 
