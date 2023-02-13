@@ -1,4 +1,3 @@
-import { useProvider } from '../useProvider'
 import type { Controller } from '../defineController'
 import { defineController } from '../defineController'
 import { isProvider, Provider } from '../defineProvider'
@@ -61,25 +60,6 @@ export class Module<T> {
     this.providers.forEach((provider) => {
       provider.dependencies(...injectImpls(provider, this.providers))
     })
-  }
-
-  useExport<T> (provider: Provider<T> | string): T {
-    if (typeof provider !== 'string') {
-      if (this.exports.some(({ token }) => token === provider.token)) {
-        return useProvider(provider)
-      } else {
-        throw new Error('should export current provider in this module')
-      }
-    }
-
-    const p = this.exports.filter(({ name }) => name === provider)
-
-    if (!p.length) { throw new Error(`do not have provider named ${provider}`) }
-    if (p.length > 1) { throw new Error(`have more than one provider named ${provider}`) }
-
-    const [r] = p
-
-    return useProvider(r) as T
   }
 }
 
