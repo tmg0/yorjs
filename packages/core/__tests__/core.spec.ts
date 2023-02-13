@@ -25,7 +25,10 @@ export const providerB = defineProvider('pb').implements(IProviderB).setup(() =>
 }))
 
 export const providerC = defineProvider('pc').setup(() => ({ doC () { return 'C' } }))
-export const providerD = defineProvider('pd').inject(providerC).setup(p => ({ doC () { return p.doC() } }))
+export const providerD = defineProvider('pd').inject(providerC).setup(p => ({
+  doC () { return p.doC() },
+  doD () { return 'D' }
+}))
 
 export const controllerA = defineController().implements(IController).inject(IProviderA, IProviderB).setup((a, b) => ({
   do (parmas) {
@@ -33,9 +36,9 @@ export const controllerA = defineController().implements(IController).inject(IPr
   }
 }))
 
-export const controllerB = defineController().implements(IController).inject(IProviderA, IProviderB).setup((a, b) => ({
-  do (parmas) {
-    return parmas === 'a' ? a.doA() : b.doB()
+export const controllerB = defineController().inject(providerD).setup(p => ({
+  do (parmas: 'c' | 'd') {
+    return parmas === 'c' ? p.doC() : p.doD()
   }
 }))
 

@@ -2,7 +2,7 @@ import { flatten } from '@yorjs/shared'
 import type { Provider } from '../defineProvider'
 import { Interface } from '../defineInterface'
 
-type InterfacePartials<T> = { [P in keyof T]: T[P] extends Interface ? T[P]['getter'] : any }
+type InterfacePartials<T> = { [P in keyof T]: T[P] extends Interface ? T[P]['getter'] : T[P] extends Provider<any> ? ReturnType<T[P]['getter']> : any }
 
 export interface ControllerMetadata<T> {
   dependencies: Provider<unknown>[]
@@ -29,13 +29,13 @@ export class Controller<T> {
     return this
   }
 
-  inject<I extends Interface[]> (...i: I) {
+  inject<I extends Interface[] | Provider<any>[]> (...i: I) {
     this.metadata.injectors = flatten(i)
     return this
   }
 }
 
-export class ControllerFactory<T, D extends Interface[]> {
+export class ControllerFactory<T, D extends Interface[] | Provider<any>[]> {
   public instance = new Controller<T>()
 
   implements<I extends Interface<T>> (i: I): ControllerFactory<I['getter'], D> {
@@ -43,15 +43,15 @@ export class ControllerFactory<T, D extends Interface[]> {
     return this
   }
 
-  inject<I extends Interface[]> (...i: I) {
+  inject<I extends Interface[] | Provider<any>[]> (...i: I) {
     if (i && i.length > 0) { this.instance.inject(...i) }
 
     return this as unknown as ControllerFactory<T, I>
   }
 
-  setup (getter: (...args: InterfacePartials<D>) => T) {
-    this.instance.getter = getter as (...args: any[]) => T
-    return this.instance
+  setup <R> (getter: (...args: InterfacePartials<D>) => T extends object ? T : R) {
+    this.instance.getter = getter as any
+    return this.instance as T extends object ? Controller<T> : Controller<R>
   }
 }
 

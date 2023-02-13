@@ -4,7 +4,7 @@ import type { Guard } from '../defineGuard'
 import { Interface } from '../defineInterface'
 
 type DependencyPartials<T> = { [P in keyof T]: Provider<T[P], string> }
-type InterfacePartials<T> = { [P in keyof T]: T[P] extends Interface ? T[P]['getter'] : any }
+type InterfacePartials<T> = { [P in keyof T]: T[P] extends Interface ? T[P]['getter'] : T[P] extends Provider<any> ? ReturnType<T[P]['getter']> : any }
 
 export interface ProviderOptions {
   singleton?: boolean
@@ -80,7 +80,7 @@ class ProviderFactory<T, D extends Interface[] | Provider<any>[], N extends stri
     return this as unknown as ProviderFactory<T, I, N>
   }
 
-  setup <R> (getter: (...args: InterfacePartials<D>) => R, options: ProviderOptions = { singleton: true }) {
+  setup <R> (getter: (...args: InterfacePartials<D>) => T extends object ? T : R, options: ProviderOptions = { singleton: true }) {
     this.instance.getter = getter as any
     this.instance.singleton = !!options.singleton
     this.instance.name = this.name
