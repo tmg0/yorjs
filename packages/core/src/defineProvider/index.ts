@@ -29,6 +29,7 @@ export class Provider<T, N extends string = any> {
   constructor (getter: (...args: any[]) => T = () => ({} as T), options: ProviderOptions = { singleton: true }) {
     this.getter = getter
     this.singleton = !!options?.singleton
+    this.metadata.interface.implements.push(this)
   }
 
   dependencies (...dependencies: DependencyPartials<Parameters<Provider<T, string>['getter']>>) {
