@@ -24,15 +24,28 @@ export const providerB = defineProvider('pb').implements(IProviderB).setup(() =>
   }
 }))
 
-export const controller = defineController().implements(IController).inject(IProviderA, IProviderB).setup((a, b) => ({
+export const providerC = defineProvider('pc').setup(() => ({ doC () { return 'C' } }))
+export const providerD = defineProvider('pd').inject(providerC).setup(p => ({ doC () { return p.doC() } }))
+
+export const controllerA = defineController().implements(IController).inject(IProviderA, IProviderB).setup((a, b) => ({
   do (parmas) {
     return parmas === 'a' ? a.doA() : b.doB()
   }
 }))
 
-export const module = defineModule({
-  controller,
+export const controllerB = defineController().implements(IController).inject(IProviderA, IProviderB).setup((a, b) => ({
+  do (parmas) {
+    return parmas === 'a' ? a.doA() : b.doB()
+  }
+}))
+
+export const moduleA = defineModule({
+  controller: controllerA,
   providers: [providerA, providerB]
+})
+
+export const moduleB = defineModule({
+  providers: [providerC, providerD]
 })
 
 export const validator = defineValidator().setup(() => ({

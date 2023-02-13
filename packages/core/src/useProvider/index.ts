@@ -30,19 +30,17 @@ export const injectInterceptors = <T, I>(context: Provider<T>, interceptors: Int
         }
 
         return new Promise((resolve, reject) => {
-          res
-            .then((promiseRes: any) => {
-              afterInterceptors.forEach((after) => {
-                after(promiseRes)
-              })
-              resolve(promiseRes)
+          res.then((promiseRes: any) => {
+            afterInterceptors.forEach((after) => {
+              after(promiseRes)
             })
-            .catch((error: any) => {
-              interceptors.forEach(({ errorHandler }) => {
-                errorHandler && errorHandler(error)
-              })
-              reject(error)
+            resolve(promiseRes)
+          }).catch((error: any) => {
+            interceptors.forEach(({ errorHandler }) => {
+              errorHandler && errorHandler(error)
             })
+            reject(error)
+          })
         })
       } as any
     }

@@ -1,4 +1,4 @@
-import { flatten } from '@yorjs/shared'
+import { flatten, isObject } from '@yorjs/shared'
 import type { Interceptor } from '../defineInterceptor'
 import type { Guard } from '../defineGuard'
 import { Interface } from '../defineInterface'
@@ -15,6 +15,8 @@ export interface ProviderMetadata<T> {
   interface: Interface<T>
   injectors: Interface[]
 }
+
+export const isProvider = (value: any): value is Provider<any> => isObject(value) && value.constructor === Provider
 
 export class Provider<T, N extends string = any> {
   public name = '' as N
@@ -43,7 +45,7 @@ export class Provider<T, N extends string = any> {
     return this
   }
 
-  inject<I extends Interface[]> (...i: I) {
+  inject<I extends Interface[] | Provider<any>[]> (...i: I) {
     this.metadata.injectors = flatten(i)
     return this
   }
@@ -59,7 +61,7 @@ export class Provider<T, N extends string = any> {
   }
 }
 
-class ProviderFactory<T, D extends Interface[], N extends string = ''> {
+class ProviderFactory<T, D extends Interface[] | Provider<any>[], N extends string = ''> {
   public name = '' as N
   public instance = new Provider<T, N>()
 
@@ -72,17 +74,17 @@ class ProviderFactory<T, D extends Interface[], N extends string = ''> {
     return this
   }
 
-  inject<I extends Interface[]> (...i: I) {
+  inject<I extends Interface[] | Provider<any>[]> (...i: I) {
     if (i && i.length > 0) { this.instance.inject(...i) }
 
     return this as unknown as ProviderFactory<T, I, N>
   }
 
-  setup (getter: (...args: InterfacePartials<D>) => T, options: ProviderOptions = { singleton: true }) {
-    this.instance.getter = getter as (...args: any[]) => T
+  setup <R> (getter: (...args: InterfacePartials<D>) => R, options: ProviderOptions = { singleton: true }) {
+    this.instance.getter = getter as any
     this.instance.singleton = !!options.singleton
     this.instance.name = this.name
-    return this.instance
+    return this.instance as T extends object ? Provider<T, N> : Provider<R, N>
   }
 }
 
