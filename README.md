@@ -39,22 +39,13 @@ import { } from '@yorjs/core'
 A basic usage of yor. Include define provider / controller / interface / module
 
 ```
-import { defineProvider, defineController, defineInterface,  useModule } from '@yorjs/core'
+import { defineProvider, defineController, useModule } from '@yorjs/core'
 
-const IProvider = defineInterface<{
-  do: () => string
-}>()
-
-const IController = defineController<{
-  result: string
-  do: () => void
-}>()
-
-const provider = defineProvider().implements(IProvider).setup(() => ({
+const provider = defineProvider().setup(() => ({
   do() { return 'done' }
 }))
 
-const controller = defineController().implements(IController).inject(IProvider).setup((p) => {
+const controller = defineController().inject(provider).setup((p) => {
   let result = ''
 
   return {
