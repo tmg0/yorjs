@@ -1,4 +1,4 @@
-import { defineController, defineField, defineInterface, defineModule, defineProvider, defineValidator } from '../index'
+import { defineController, defineField, defineInterface, defineModule, defineProvider, defineValidator, useDefineModule } from '../index'
 
 describe('jest', () => {
   it('runtime', () => {
@@ -50,6 +50,11 @@ export const moduleA = defineModule({
 export const moduleB = defineModule({
   controller: controllerB,
   providers: [providerC, providerD]
+})
+
+export const useModuleA = useDefineModule({
+  controller: controllerA,
+  providers: [providerA, providerB]
 })
 
 export const validator = defineValidator().setup(() => ({

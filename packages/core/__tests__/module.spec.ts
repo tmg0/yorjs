@@ -1,5 +1,5 @@
 import { useExports, useModule } from '../index'
-import { moduleA, moduleB } from './core.spec'
+import { moduleA, moduleB, useModuleA } from './core.spec'
 
 describe('use module', () => {
   it('should have controller method in module', () => {
@@ -15,5 +15,10 @@ describe('use module', () => {
   it('should use default provider without implements as interface', () => {
     const { do: doB } = useModule(moduleB)
     expect(doB('c')).toBe('C')
+  })
+
+  it('should can be used without useModule hook', () => {
+    const { do: doM } = useModuleA()
+    expect(doM('a')).toBe('A')
   })
 })
