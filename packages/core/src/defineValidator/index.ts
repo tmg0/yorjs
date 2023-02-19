@@ -75,8 +75,8 @@ export const validateFeildsDeep = <T extends Record<string, any>>(fields: T): Pr
   })
 }
 
-export class Field {
-  public value: any
+export class Field<T = any> {
+  public value: T
   public chains: FieldValidate[] = []
   public _min?: number
   public _max?: number
@@ -153,6 +153,6 @@ export const defineValidator = () => ({
   }
 })
 
-export const defineField = (value?: any) => {
-  return new Field(value)
+export const defineField = <T>(value?: T) => {
+  return new Field<T>(value)
 }

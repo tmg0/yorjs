@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { validator } from './core.spec'
 
 const reset = () => {
