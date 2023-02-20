@@ -5,6 +5,11 @@
   "bin": {
     "yor": "./bin/yor.js"
   },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "ci-publish": "tsup && pnpm publish"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -12,5 +17,8 @@
     "commander": "^9.4.1",
     "fs-extra": "^11.0.0",
     "mlly": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1"
   }
 }

@@ -1,9 +1,9 @@
 #! /usr/bin/env node
 
-const { program } = require('commander')
-const { version } = require('../package.json')
-const { Yor, YorAlias } = require('./enums')
-const { templates } = require('./utils')
+import { program } from 'commander'
+import { version } from './package.json'
+import { Yor, YorAlias } from './src/enums'
+import { templates } from './src/utils'
 
 program.command('create')
   .version(version)
@@ -20,14 +20,11 @@ program.command('create')
       return
     }
 
-    if (options[Yor.INTERFACE])
-      templates[Yor.INTERFACE](str, options.path)
+    if (options[Yor.INTERFACE]) { templates[Yor.INTERFACE](str, options.path) }
 
-    if (options[Yor.PROVIDER])
-      templates[Yor.PROVIDER](str, options.path)
+    if (options[Yor.PROVIDER]) { templates[Yor.PROVIDER](str, options.path) }
 
-    if (options[Yor.INTERFACE])
-      templates[Yor.INTERFACE](str, options.path)
+    if (options[Yor.INTERFACE]) { templates[Yor.INTERFACE](str, options.path) }
   })
 
 program.parse(process.argv)
