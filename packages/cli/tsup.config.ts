@@ -8,6 +8,5 @@ export default defineConfig(options => ({
   treeshake: true,
   dts: true,
   format: ['cjs', 'esm', 'iife'],
-  external: ['commander', 'fs-extra', 'mlly'],
   minify: !options.watch
 }))
