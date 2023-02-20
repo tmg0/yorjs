@@ -6,6 +6,6 @@ export default defineConfig(options => ({
   sourcemap: true,
   clean: true,
   treeshake: true,
-  format: ['cjs', 'esm', 'iife'],
+  format: ['cjs'],
   minify: !options.watch
 }))
