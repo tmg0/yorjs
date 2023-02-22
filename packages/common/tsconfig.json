@@ -19,7 +19,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "noUnusedLocals": true,
-    "types": ["jest", "@yorjs/core"]
+    "types": ["@yorjs/core"]
   },
   "exclude": ["node_modules", "**/dist"]
 }

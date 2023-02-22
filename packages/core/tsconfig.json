@@ -15,8 +15,7 @@
     "jsx": "preserve",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "noUnusedLocals": true,
-    "types": ["jest"]
+    "noUnusedLocals": true
   },
   "exclude": ["node_modules", "__tests__"]
 }

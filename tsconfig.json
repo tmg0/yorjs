@@ -18,8 +18,7 @@
     "jsx": "preserve",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "noUnusedLocals": true,
-    "types": ["jest"]
+    "noUnusedLocals": true
   },
   "include": ["packages/**/*"],
   "exclude": ["node_modules", "**/dist"]

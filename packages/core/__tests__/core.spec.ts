@@ -1,6 +1,6 @@
 import { defineController, defineInterface, defineModule, defineProvider, useDefineModule } from '../index'
 
-describe('jest', () => {
+describe('vitest', () => {
   it('runtime', () => {
     expect(1).toBe(1)
   })

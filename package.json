@@ -10,20 +10,17 @@
     "upgrade:core": "pnpm -C ./packages/core upgrade",
     "ci-publish:core": "pnpm -C ./packages/core ci-publish",
     "ci-publish:shared": "pnpm -C ./packages/shared ci-publish",
-    "test": "jest"
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
-    "@types/jest": "^29.0.0",
     "eslint": "^8.24.0",
-    "jest": "^29.0.2",
-    "ts-jest": "29.0.0-next.1",
-    "tslib": "^2.4.0",
     "tsup": "^6.5.0",
-    "typescript": "^4.8.2"
+    "typescript": "^4.8.2",
+    "vitest": "^0.28.5"
   },
   "volta": {
     "node": "18.12.1"
