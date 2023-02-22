@@ -1,8 +1,9 @@
+import { describe, expect, test } from 'vitest'
 import { defineInterceptor, useProvider } from '../index'
 import { providerB } from './core.spec'
 
 describe('define interactor', () => {
-  it('should log before and after event action', async () => {
+  test('should log before and after event action', async () => {
     const logs: string[] = []
 
     const interactor = defineInterceptor(() => {

@@ -1,7 +1,8 @@
+import { describe, expect, test } from 'vitest'
 import { defineController, defineInterface, defineModule, defineProvider, useDefineModule } from '../index'
 
 describe('vitest', () => {
-  it('runtime', () => {
+  test('runtime', () => {
     expect(1).toBe(1)
   })
 })
