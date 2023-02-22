@@ -7,9 +7,6 @@
     "dev:core": "pnpm -C ./packages/core dev",
     "dev:shared": "pnpm -C ./packages/shared dev",
     "build": "pnpm -r --filter=./packages/* build",
-    "upgrade:core": "pnpm -C ./packages/core upgrade",
-    "ci-publish:core": "pnpm -C ./packages/core ci-publish",
-    "ci-publish:shared": "pnpm -C ./packages/shared ci-publish",
     "test": "vitest"
   },
   "keywords": [],
